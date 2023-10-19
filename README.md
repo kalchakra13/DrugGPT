@@ -3,4 +3,4 @@
  
 ## Bugs or Questions?
 
-If you encounter any problems when using the code, or want to report a bug, you can open an issue or email hongjian.zhou@exeter.ox.ac.uk and fenglin.liu@eng.ox.ac.uk. Please try to specify the problem with details so we can help you better and quicker!
+If you encounter any problems when using the code, or want to report a bug, you can open an issue or email hongjian.zhou@cs.ox.ac.uk and fenglin.liu@eng.ox.ac.uk. Please try to specify the problem with details so we can help you better and quicker!
