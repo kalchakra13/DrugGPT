@@ -1,0 +1,1081 @@
+baseline:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+zh_baseline:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  src_lang: zh
+Inoise:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: True
+  related_caption_prob: 1.0
+Inoise_01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: True
+  related_caption_prob: 1.0
+  noise_std: 0.1
+Inoise_001:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: True
+  related_caption_prob: 1.0
+  noise_std: 0.01
+InoiseK20:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+InoiseK2:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 2
+  related_caption_prob: 1.0
+InoiseK3:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 3
+  related_caption_prob: 1.0
+InoiseK5:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+InoiseK10:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 10
+  related_caption_prob: 1.0
+InoiseK40:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 40
+  related_caption_prob: 1.0
+InoiseK80:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 80
+  related_caption_prob: 1.0
+Fnoise01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.1
+Fnoise001:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.01
+Fnoise005:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.05
+Fnoise02:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.2
+Fnoise05:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.5
+Fnoise1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 1.0
+Inoise_Fnoise01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.1
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: True
+  related_caption_prob: 1.0
+InoiseK20_Fnoise01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.1
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0  
+MO8:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 8
+  num_related_caption: 8
+MO8K20:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  num_related_caption: 8
+MO2K20:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  num_related_caption: 2
+MO1-8K20:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  num_related_caption: [1, 8]
+base:
+  add_cross_attention: False
+  normalize: True
+IP20:
+  add_cross_attention: False
+  normalize: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+FP01:
+  add_cross_attention: False
+  normalize: True
+  noise_std: 0.1
+IP20_FP01:
+  add_cross_attention: False
+  normalize: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.1
+IF_02_005:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 2
+  related_caption_prob: 1.0
+  noise_std: 0.05
+IF_03_005:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 3
+  related_caption_prob: 1.0
+  noise_std: 0.05
+IF_05_005:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.05
+IF_80_005:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 80
+  related_caption_prob: 1.0
+  noise_std: 0.05
+IF_05_001:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+IF_10_001:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 10
+  related_caption_prob: 1.0
+  noise_std: 0.01
+IF_20_001:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+IF_40_001:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 40
+  related_caption_prob: 1.0
+  noise_std: 0.01
+IF_05_01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+IF_10_01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 10
+  related_caption_prob: 1.0
+  noise_std: 0.1
+IF_20_01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.1
+IF_40_01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 40
+  related_caption_prob: 1.0
+  noise_std: 0.1
+
+
+Fnoise001_200k:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  noise_std: 0.01
+  num_adapt_samples: 200000
+baseline_200k:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  num_adapt_samples: 200000
+IF_20_001_P4:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  ProjecterWithPrompts: True
+  proj_prompt_length: 4
+IF_20_001_P8:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  ProjecterWithPrompts: True
+  proj_prompt_length: 8
+IF_20_001_P16:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  ProjecterWithPrompts: True
+  proj_prompt_length: 16
+P4:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  ProjecterWithPrompts: True
+  proj_prompt_length: 4
+P8:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  ProjecterWithPrompts: True
+  proj_prompt_length: 8
+P16:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  ProjecterWithPrompts: True
+  proj_prompt_length: 16
+pp4:
+  add_cross_attention: True
+  normalize: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  prompter: True
+  prompt_length: 4
+  conditional: False
+plm03_p4:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  ProjecterWithPrompts: True
+  proj_prompt_length: 4
+  prompt_within_layers: [0, 3]
+
+dp_1000_4:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  ProjecterWithDictPrompts: True
+  dict_size: 1000
+  n_prompts: 4
+concept_16:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  concepts: True
+  n_prompts: 16
+concept_05_001_32:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 32
+concept_05_001_16:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+concept_05_001_8:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 8
+concept_05_001_4:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 4
+concept_05_001_2:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 2
+concept_05_01_32:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 32
+concept_05_01_16:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 16
+concept_05_01_8:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 8
+concept_05_01_4:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 4
+concept_05_01_2:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 2
+
+concept_05_001_16_CLIP16:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  n_clip_prompts: 16
+
+
+concept_05_001_16_E:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  templates: ['{}', 'a concept of {}', 'an entity of {}']
+
+IF_05_001_SNG16:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  sng: True
+  n_prompts: 16
+  templates: ['{}']
+
+IF_05_001_SNG16_E:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  sng: True
+  n_prompts: 16
+  templates: ['{}', 'a concept of a {}', 'a concept of the {}']
+
+LM_L12:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  decoder_config: configs/L12_H8_D512.json
+LM_L12_D768:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  decoder_config: configs/L12_H12_D768.json
+LM_BERT:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  decoder_config: configs/L12_H12_D768.json
+  init_with_bert: True
+LM_BERTf:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  decoder_config: configs/L12_H12_D768.json
+  init_with_bert: True
+  freeze_decoder: True
+LM_GPT2:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  text_model: data/checkpoints/gpt2
+  decoder_config: data/checkpoints/gpt2/config.json
+  init_with_bert: True
+  prompt: <|endoftext|>
+LM_GPT2f:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  text_model: data/checkpoints/gpt2
+  decoder_config: data/checkpoints/gpt2/config.json
+  init_with_bert: True
+  freeze_decoder: True
+  prompt: <|endoftext|>
+
+concept_05_001_16_Prefix_E0_AP:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 1
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+concept_05_001_16_Prefix_E0:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+concept_05_001_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  exclude: True
+concept_05_001_32_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 32
+  exclude: True
+concept_05_001_8_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 8
+  exclude: True
+concept_05_001_4_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 4
+  exclude: True
+concept_05_001_16_Prefix_E1_AP:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 1
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  exclude: True
+
+concept_16_Prefix_E0:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  concepts: True
+  n_prompts: 16
+concept_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  concepts: True
+  n_prompts: 16
+  exclude: True
+concept_05_01_16_Prefix_E0:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 16
+concept_05_01_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 16
+  exclude: True
+concept_05_01_32_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 32
+  exclude: True
+concept_05_01_8_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 8
+  exclude: True
+concept_05_01_4_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 4
+  exclude: True
+i3d:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  i3d: True
+
+concept_05_1_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 1.0
+  concepts: True
+  n_prompts: 4
+  exclude: True
+concept_10_001_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 10
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 4
+  exclude: True
+concept_20_001_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 4
+  exclude: True
+concept_10_01_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 10
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 4
+  exclude: True
+concept_20_01_16_Prefix_E1:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 20
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 4
+  exclude: True
+
+full_001_zh_google:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  exclude: True
+  parallel_prefixes: [zh]
+baseline_zh_google:
+  add_cross_attention: True
+  normalize: True
+  parallel_prefixes: [zh]
+
+vit_b_32_baseline:
+  add_cross_attention: True
+  normalize: True
+  clip_arch: ViT-B/32
+vit_b_32_baseline_zh:
+  add_cross_attention: True
+  normalize: True
+  clip_arch: ViT-B/32
+  src_lang: zh
+multilingual_clip_baseline:
+  add_cross_attention: True
+  normalize: True
+  multilingual_clip: True
+  clip_arch: ViT-B/32
+multilingual_clip_baseline_zh:
+  add_cross_attention: True
+  normalize: True
+  multilingual_clip: True
+  clip_arch: ViT-B/32
+  src_lang: zh
+
+mono_base:
+  add_cross_attention: True
+  normalize: True
+  clip_arch: ViT-B/32
+  decoder_config: configs/L6_H12_D768.json
+mono_base_zh:
+  add_cross_attention: True
+  normalize: True
+  clip_arch: ViT-B/32
+  src_lang: zh
+  decoder_config: configs/L6_H12_D768.json
+mult_base:
+  add_cross_attention: True
+  normalize: True
+  multilingual_clip: True
+  clip_arch: ViT-B/32
+  decoder_config: configs/L6_H12_D768.json
+mult_base_zh:
+  add_cross_attention: True
+  normalize: True
+  multilingual_clip: True
+  clip_arch: ViT-B/32
+  src_lang: zh
+  decoder_config: configs/L6_H12_D768.json
+mult_tie_base:
+  add_cross_attention: True
+  normalize: True
+  multilingual_clip: True
+  clip_arch: ViT-B/32
+  decoder_config: configs/L6_H12_D768.json
+  tie_encoder_decoder: True
+mult_tie_base_zh:
+  add_cross_attention: True
+  normalize: True
+  multilingual_clip: True
+  clip_arch: ViT-B/32
+  src_lang: zh
+  decoder_config: configs/L6_H12_D768.json
+  tie_encoder_decoder: True
+
+
+rebuttal_full:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  exclude: True
+  concept_fn: concepts.txt
+rebuttal_baseline:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+rebuttal_de_baseline:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  src_lang: de
+rebuttal_fr_baseline:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 0
+  src_lang: fr
+rebuttal_nv:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  exclude: True
+  concept_fn: conceppts_with_verbs.txt
+rebuttal_v:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.01
+  concepts: True
+  n_prompts: 16
+  exclude: True
+  concept_fn: verbs.txt
+rebuttal_nv_01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 16
+  exclude: True
+  concept_fn: conceppts_with_verbs.txt
+rebuttal_v_01:
+  add_cross_attention: True
+  normalize: True
+  prompt_length: 16
+  ConceptPromptPrefixer: True
+  with_related_caption_as_input: True
+  use_ground_truth_related_caption_ids: False
+  related_caption_topk: 5
+  related_caption_prob: 1.0
+  noise_std: 0.1
+  concepts: True
+  n_prompts: 16
+  exclude: True
+  concept_fn: verbs.txt
+
+small_init1_001:
+  normalize: True
+  noise_std: 0.01
+  text_model: data/checkpoints/bert-small
+  decoder_config: data/checkpoints/bert-small/config.json
+  init_with_bert: True
+small_init0_001:
+  normalize: True
+  noise_std: 0.01
+  text_model: data/checkpoints/bert-small
+  decoder_config: data/checkpoints/bert-small/config.json
+  init_with_bert: False
+small_init1:
+  normalize: True
+  text_model: data/checkpoints/bert-small
+  decoder_config: data/checkpoints/bert-small/config.json
+  init_with_bert: True
+small_init0:
+  normalize: True
+  text_model: data/checkpoints/bert-small
+  decoder_config: data/checkpoints/bert-small/config.json
+  init_with_bert: False
