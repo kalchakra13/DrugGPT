@@ -1,5 +1,6 @@
 # DrugGPT
-[10/2023] We release our code on the pre-processing and generation of data and model. However, our university is patenting some of the algorithm but we are working very hard to make everything avaliable for the reviewers and stay transparent. We are waiting to hear back but promise we will make all the codebase avaliable in the coming weeks!
+[12/10/2023] We release our code on the pre-processing and generation of data and model. 
+[25/10/2023] We make all the codebase avaliable!
 
 ## Pre-trained Model
 The trained model is available at [Google Drive](https://drive.google.com/file/d/1jyavc13OdwzVZaTDdo6oEm4_adjr_nO8/view?usp=sharing).
