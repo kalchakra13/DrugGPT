@@ -1,6 +1,7 @@
 # DrugGPT
 [12/10/2023] We release our code on the pre-processing and generation of data and model. 
-[25/10/2023] We make all the codebase avaliable!
+
+[26/10/2023] We make all the codebase avaliable!
 
 ## Pre-trained Model
 The trained model is available at [Google Drive](https://drive.google.com/file/d/1jyavc13OdwzVZaTDdo6oEm4_adjr_nO8/view?usp=sharing).
