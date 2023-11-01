@@ -1,1 +1,64 @@
-# Placeholder
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch_geometric.nn as pyg_nn
+import torch_geometric.utils as pyg_utils
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+
+class GraphConvolutionalNetwork(nn.Module):
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super(GraphConvolutionalNetwork, self).__init__()
+
+        self.conv1 = pyg_nn.GCNConv(input_dim, hidden_dim)
+        self.conv2 = pyg_nn.GCNConv(hidden_dim, output_dim)
+
+    def forward(self, data):
+        x, edge_index = data.x, data.edge_index
+
+        x = F.relu(self.conv1(x, edge_index))
+        x = F.dropout(x, p=0.5, training=self.training)
+
+        x = self.conv2(x, edge_index)
+
+        return x
+
+
+def get_initial_prefix(G, symptoms_embedding, embd_model, hidden_dim=128, output_dim=128):
+    # Initialize GCN model
+    input_dim = G.nodes[list(G.nodes())[0]]['embedding'].shape[0]
+    model = GraphConvolutionalNetwork(input_dim, hidden_dim, output_dim)
+
+    # Prepare input for GCN
+    # Assume node_ids is a dictionary mapping from node name to an integer index
+    # and node_embeddings is a matrix of shape [num_nodes, input_dim]
+    node_ids = {node: i for i, node in enumerate(G.nodes())}
+    node_embeddings = torch.tensor([G.nodes[node]['embedding'] for node in G.nodes()])
+    edge_index = torch.tensor([[node_ids[src], node_ids[dst]] for src, dst in G.edges()]).t().contiguous()
+    data = pyg_utils.Data(x=node_embeddings, edge_index=edge_index)
+
+    # Forward pass through GCN
+    out = model(data)
+
+    # Calculate the global graph embedding by averaging all node embeddings
+    g_a = torch.mean(out, dim=0)
+
+    # Calculate cosine similarity between symptoms_embedding and all disease nodes to find the most similar one
+    disease_nodes = [node for node, attr in G.nodes(data=True) if attr['type'] == 'disease']
+    disease_embeddings = torch.tensor([G.nodes[node]['embedding'] for node in disease_nodes])
+    disease_similarities = cosine_similarity(symptoms_embedding.reshape(1, -1), disease_embeddings)
+    most_similar_disease_idx = np.argmax(disease_similarities)
+    g_d = torch.tensor(G.nodes[disease_nodes[most_similar_disease_idx]]['embedding'])
+
+    # Combine g_a and g_d to get the initial prefix g for the soft prompt tuning
+    g = torch.cat((g_a, g_d), dim=0)
+
+    return g
+
+# Example usage:
+# G is the graph obtained from DSDGGenerator
+# symptoms_embedding is the embedding of the extracted symptoms, obtained using embd_model from DSDGGenerator
+
+# g = get_initial_prefix(G, symptoms_embedding, embd_model)
+
