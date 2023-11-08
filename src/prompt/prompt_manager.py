@@ -25,20 +25,19 @@ class PromptManager:
                         'and symptoms are:1. Common symptoms.2. Disease causes.3. Disease diagnosis.4. Disease '
                         'treatment.5. Disease complications.Step 2: Extract the specific knowledge from the '
                         'identified knowledge categories to answer the inquiry correctly.',
-                'answer_format': "Question: {question}\nIdentified: Drugs {drugs}, Symptoms {symptoms}, Disease {"
-                                 "disease}\nAnswer: Knowledge Needed {knowledge_needed}"
+                'answer_format': "Question: {question}\nAnswer: Knowledge Needed {knowledge_needed}"
             },
             'evidence_generation': {
                 'task': """Your task is to answer questions. Understand the question, analyze it step by step, 
-                and provide a concise and accurate answer. Among the provided choices, choose the one that best fits 
-                the criteria below:TO DO:Only use the knowledge provided to answer the inquiryNOT TO DO: 1. Do not 
-                make assumptions not supported by the provided content. 2. Avoid providing personal opinions or 
-                interpretations. 3. Summarize and interpret the knowledge provided objectively and accurately.""",
+                    and provide a concise and accurate answer. Among the provided choices, choose the one that best fits 
+                    the criteria below:TO DO:Only use the knowledge provided to answer the inquiryNOT TO DO: 1. Do not 
+                    make assumptions not supported by the provided content. 2. Avoid providing personal opinions or 
+                    interpretations. 3. Summarize and interpret the knowledge provided objectively and accurately.""",
                 'answer_format': """Analysis: Provide an analysis that logically leads to the answer based on the 
-                relevant information. Final Answer: Provide the final answer, which should be a single letter in the 
-                alphabet representing the best option among the multiple choices provided in the question. When 
-                analyzing each choice, include the relevant knowledge relied upon and display its source link (
-                provided as Link[https://...]) to the relevant part of your output"""
+                    relevant information. Final Answer: Provide the final answer, which should be a single letter in the 
+                    alphabet representing the best option among the multiple choices provided in the question. When 
+                    analyzing each choice, include the relevant knowledge relied upon and display its source link (
+                    provided as Link[https://...]) to the relevant part of your output""",
             }
         }
         self.fs_examples = {
@@ -49,10 +48,11 @@ class PromptManager:
                                 "interphalangeal joints and metacarpophalangeal (MCP) joints. Her RF is positive and "
                                 "ANA is negative. Which of the following medications is most likely to improve her "
                                 "joint pain symptoms?",
-                    'drugs': ["D-penicillamine", "an anti-malarial", "methotrexate", "NSAID or aspirin"],
-                    'symptoms': ["Painful swelling of both hands", "stiffness in the morning",
-                                 "involvement of proximal interphalangeal joints and metacarpophalangeal joints."],
-                    'diseases': ["None"]
+                    'answer': """
+                    Drugs: [D-penicillamine, an anti-malarial, methotrexate, NSAID or aspirin],
+                    Symptoms: [Painful swelling of both hands, stiffness in the morning,
+                                 involvement of proximal interphalangeal joints and metacarpophalangeal joints],
+                    Diseases: [None]""",
                 }
             ,
             'knowledge_acquisition':
@@ -62,11 +62,11 @@ class PromptManager:
                                 interphalangeal joints and metacarpophalangeal (MCP) joints. Her RF is positive and 
                                 ANA is negative. Which of the following medications is most likely to improve her 
                                 joint pain symptoms?
-                                Drugs Identified: ["D-penicillamine", "an anti-malarial", "methotrexate", "NSAID or aspirin"]
-                                Symptoms Identified: ["Painful swelling of both hands", "stiffness in the morning",
+                                Drugs: ["D-penicillamine", "an anti-malarial", "methotrexate", "NSAID or aspirin"]
+                                Symptoms: ["Painful swelling of both hands", "stiffness in the morning",
                                  "involvement of proximal interphalangeal joints and metacarpophalangeal joints."]
-                                 Diseases Identified: ["None"]""",
-                    'knowledge_needed': "[1, 8]",
+                                 Diseases: ["None"]""",
+                    'answer': "Knowledge Needed [1, 8]",
                 },
             'evidence_generation': {
                 'task': """Question: A 29-year-old woman develops painful swelling of both hands. She is also very 
@@ -103,50 +103,56 @@ class PromptManager:
                 may take several weeks or months to demonstrate a clinical effect. NSAIDs , such as aspirin, 
                 ibuprofen, are used to help decrease swelling, pain, and fever and relieve joint pain symptoms 
                 instead. Link[https://www.nhs.uk/conditions/rheumatoid-arthritis/] """,
-                'answer_format': """Analysis: Provide an analysis that logically leads to the answer based on the 
-                        relevant information. Final Answer: Provide the final answer, which should be a single letter in the 
-                        alphabet representing the best option among the multiple choices provided in the question."""
+
+                'answer': """Analysis: The patient's symptoms and positive RF (Rheumatoid Factor) suggest a diagnosis 
+                of rheumatoid arthritis. The question asks for the medication that would most likely improve her 
+                joint pain symptoms. A: D-penicillamine is used to treat severe rheumatoid arthritis after other 
+                medicines have been tried without success, suggesting it is not the first-line treatment for pain 
+                relief in rheumatoid arthritis. More information is avaliable here(
+                https://www.drugs.com/mtm/penicillamine.html). B: An anti-malarial such as Hydroxychloroquine is used 
+                to treat symptoms of rheumatoid arthritis, but it is not primarily used for pain relief. More 
+                information is avaliable here(https://www.drugs.com/hydroxychloroquine.html).C: Methotrexate is a 
+                first-line treatment for rheumatoid arthritis, but it is used to slow the progression of the  disease 
+                and does not provide immediate pain relief. More information is avaliable here(https://www.drugs.com/ 
+                methotrexate.html).D: NSAIDs or aspirin are commonly used to provide immediate relief from pain, 
+                inflammation, and fever, making them suitable for relieving joint pain symptoms in rheumatoid 
+                arthritis. More information is avaliable here(https://www.drugs.com/aspirin.html). Final Answer: D"""
             }
 
         }
 
-    def generate_combined_prompt(self, task_type, prompt_type):
-        if prompt_type == "sys_prompt":
-            return self.sys_prompts[task_type]['task'] + '\n' + self.sys_prompts[task_type]['answer_format']
-        elif prompt_type == "fs_prompt":
-            fs_template = FewShotPromptTemplate(
-                examples=self.fs_examples[task_type],
-                example_prompt=PromptTemplate(
-                    input_variables=["question", "drugs", "symptoms", "diseases"],
-                    template=self.sys_prompts[task_type]['answer_format']
-                ),
-                suffix="Question: {input_question}",
-                input_variables=["input_question"]
+    def generate_combined_prompt(self, task_type):
+        sys_template = PromptTemplate(
+            input_variables=["task", "answer_format"],
+            template=(
+                "You are given a task and an answer format, complete the task and respond following the answer format\n"
+                "Task: {task}\n"
+                "Answer format: {answer_format}\n"
             )
-            return fs_template
-        else:
-            raise ValueError(f"Invalid prompt_type: {prompt_type}")
+        )
+        fs_template = PromptTemplate(
+            input_variables=["question", "answer"],
+            template=(
+                "Question: {question}\n"
+                "Answer: {answer}\n"
+            )
+        )
+
+        return sys_template.format(**self.sys_prompts[task_type]) + '\n' + fs_template.format(**self.fs_examples[task_type])
 
 
 # Initialize the PromptManager
 prompt_manager = PromptManager()
 
 # Generate system prompt for Inquiry Analysis
-sys_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis", "sys_prompt")
+sys_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis")
 print("System Prompt for Inquiry Analysis:\n", sys_prompt_inquiry)
 
 # Generate few-shot prompt for Inquiry Analysis
-fs_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis", "fs_prompt")
+fs_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis")
 print("\nFew-Shot Prompt for Inquiry Analysis:\n", fs_prompt_inquiry)
 
 # Generate system prompt for Knowledge Acquisition
-sys_prompt_knowledge = prompt_manager.generate_combined_prompt("knowledge_acquisition", "sys_prompt")
+sys_prompt_knowledge = prompt_manager.generate_combined_prompt("knowledge_acquisition")
 print("\nSystem Prompt for Knowledge Acquisition:\n", sys_prompt_knowledge)
 
-# Generate few-shot prompt for Knowledge Acquisition
-fs_prompt_knowledge = prompt_manager.generate_combined_prompt("knowledge_acquisition", "fs_prompt")
-print("\nFew-Shot Prompt for Knowledge Acquisition:\n", fs_prompt_knowledge)
-
-# Generate system prompt for Evidence Generation
-sys_prompt_evidence = prompt_manager.generate_combined_prompt("evidence_generation", "sys_prompt")
-print("\nSystem Prompt for Evidence Generation:\n", sys_prompt_evidence)
