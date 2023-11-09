@@ -1,5 +1,8 @@
-from prompt_manager import PromptManager  # Assuming PromptManager is in a separate module now
-from llama_utils import inference
+from ..prompt.prompt_manager import PromptManager
+from ..llama.llama_utils import SoftEmbedding
+from ..llama.llama_utils import LLaMAUtils
+
+
 class EnsembleModel:
     def __init__(self, prompt_manager, soft_prompt, knowledge_base):
         self.prompt_manager = prompt_manager

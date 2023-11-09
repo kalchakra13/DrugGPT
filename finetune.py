@@ -13,7 +13,7 @@ import torch
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
 
-import utils
+from DrugGPT.src import utils
 
 from models import build_model
 from datasets import create_dataset, create_sampler, create_loader

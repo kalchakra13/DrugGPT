@@ -12,7 +12,7 @@ import torch
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
 
-import utils
+from DrugGPT.src import utils
 import glob
 import shutil
 from models import build_model
