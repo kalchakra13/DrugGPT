@@ -25,7 +25,8 @@ class PromptManager:
                         'and symptoms are:1. Common symptoms.2. Disease causes.3. Disease diagnosis.4. Disease '
                         'treatment.5. Disease complications.Step 2: Extract the specific knowledge from the '
                         'identified knowledge categories to answer the inquiry correctly.',
-                'answer_format': "Question: {question}\nAnswer: Knowledge Needed {knowledge_needed}"
+                'answer_format': "Question: {question}\nAnswer: Drug Knowledge Needed {drug_knowledge_needed}, "
+                                 "Disease Knowledge Needed {disease_knowledge_needed}"
             },
             'evidence_generation': {
                 'task': """Your task is to answer questions. Understand the question, analyze it step by step, 
@@ -66,43 +67,33 @@ class PromptManager:
                                 Symptoms: ["Painful swelling of both hands", "stiffness in the morning",
                                  "involvement of proximal interphalangeal joints and metacarpophalangeal joints."]
                                  Diseases: ["None"]""",
-                    'answer': "Knowledge Needed [1, 8]",
+                    'answer': "Drug Knowledge Needed [1, 8], Disease Knowledge Needed []"
                 },
             'evidence_generation': {
                 'task': """Question: A 29-year-old woman develops painful swelling of both hands. She is also very 
                 stiff in the morning. Physical examination reveals involvement of the proximal interphalangeal joints 
                 and metacarpophalangeal (MCP) joints. Her RF is positive and ANA is negative. Which of the following 
-                medications is most likely to improve her joint pain symptoms? Knowledge: Key embedding: 
+                medications is most likely to improve her joint pain symptoms? Knowledge:
                 D-penicillamine Knowledge Block: Penicillamine is a chelating (KEE-late-ing) agent that binds to 
                 excess copper and removes it from the blood stream. Penicillamine is used to remove excess copper in 
                 people with an inherited condition called Wilson's disease. Penicillamine is also used to treat 
                 severe rheumatoid arthritis after other medicines have been tried without success. Penicillamine is 
                 not approved to treat juvenile rheumatoid arthritis. Link[
-                https://www.drugs.com/mtm/penicillamine.html] Key embedding: Anti-malarial Knowledge Block: 
+                https://www.drugs.com/mtm/penicillamine.html] Anti-malarial Knowledge Block: 
                 Hydroxychloroquine is a quinoline medicine used to treat or prevent malaria, a disease caused by 
                 parasites that enter the body through the bite of a mosquito. Hydroxychloroquine is also used to 
                 treat symptoms of rheumatoid arthritis and discoid or systemic lupus erythematosus. Link[
-                https://www.drugs.com/hydroxychloroquine.html] Key embedding: Methotrexate Knowledge Block: 
+                https://www.drugs.com/hydroxychloroquine.html] Methotrexate Knowledge Block: 
                 Methotrexate interferes with the growth of certain cells of the body, especially cells that reproduce 
                 quickly, such as cancer cells, bone marrow cells, and skin cells. Methotrexate is used to treat 
                 leukemia and certain types of cancer of the breast, skin, head and neck, lung, or uterus. 
                 Methotrexate is also used to treat severe psoriasis and rheumatoid arthritis in adults. It is also 
                 used to treat active polyarticular-course juvenile rheumatoid arthritis in children. Link[
-                https://www.drugs.com/methotrexate.html] Key embedding: NSAID or aspirin Knowledge Block: Aspirin, 
+                https://www.drugs.com/methotrexate.html] NSAID or aspirin Knowledge Block: Aspirin, 
                 a salicylate, is used for immediate relief of pain, fever, inflammation, arthritis, migraines, 
                 and reduce the risk of major adverse cardiovascular events. It provides relief for various symtoms 
                 such as the flu, the common cold, neck and back pain, rheumatoid arthritis, bursitis, burns, 
-                and various injuries. Link[https://www.drugs.com/aspirin.html] Key Embedding: ['Painful swelling of 
-                both hands', 'stiffness in the morning', 'involvement of proximal interphalangeal joints and 
-                metacarpophalangeal joints.']  Knowledge Block: rheumatoid arthritis: Rheumatoid arthritis is a 
-                long-term condition that causes pain, swelling and stiffness in the joints. The condition usually 
-                affects the hands, feet and wrists.Common medications: methotrexate, leflunomide, hydroxychloroquine, 
-                sulfasalazine. DMARD such as methotrexate is usually the first medicine given for rheumatoid 
-                arthritis, often with another NSAID to relieve any pain. DMARDs help slow the progress of RA, 
-                and reduce pain, stiffness, and inflammation, however, they do not provide short-term pain relief and 
-                may take several weeks or months to demonstrate a clinical effect. NSAIDs , such as aspirin, 
-                ibuprofen, are used to help decrease swelling, pain, and fever and relieve joint pain symptoms 
-                instead. Link[https://www.nhs.uk/conditions/rheumatoid-arthritis/] """,
+                and various injuries. Link[https://www.drugs.com/aspirin.html] """,
 
                 'answer': """Analysis: The patient's symptoms and positive RF (Rheumatoid Factor) suggest a diagnosis 
                 of rheumatoid arthritis. The question asks for the medication that would most likely improve her 
