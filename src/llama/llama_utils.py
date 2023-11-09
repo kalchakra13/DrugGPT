@@ -19,12 +19,12 @@ class SoftEmbedding(nn.Module):
             self.initialize_embedding(wte, n_tokens, random_range, initialize_from_vocab)
         )
 
-    def initialize_embedding(self, wte: nn.Embedding, n_tokens: int = 20,
+    def initialize_embedding(self, n_tokens: int = 20,
                              random_range: float = 0.5, initialize_from_vocab: bool = True):
         if initialize_from_vocab:
-            return wte.weight[:n_tokens].clone().detach()
+            return self.wte.weight[:n_tokens].clone().detach()
         else:
-            return torch.FloatTensor(n_tokens, wte.weight.size(1)).uniform_(-random_range, random_range)
+            return torch.FloatTensor(n_tokens, self.wte.weight.size(1)).uniform_(-random_range, random_range)
 
     def forward(self, input_ids):
         input_embedding = self.wte(input_ids)
