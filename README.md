@@ -1,5 +1,7 @@
 # DrugGPT
-This repo contains the original implementation of our paper 
+This repo contains the original implementation of our paper ***DrugGPT: A Knowledge-Grounded Collaborative Large Language Model for Evidence-based Drug Analysis***.
+
+![DrugGPT Architecture](./img/flowchart.png)
 ## Updates
 [26/10/2023] We make all the codebases available!
 
@@ -130,6 +132,27 @@ The source data can be accessed at:
 8. **PubMedQA**: [PubMedQA Homepage](https://pubmedqa.github.io/)
 
 The pre-processed data can be accessed under the data folder.
+
+## Training
+Here are some key argument to run `train.py`:
+- `gpus`: specify the number of gpus;
+- `batch_size`: specify the number of samples in a batch;
+- `accumulate_grad_batches`: use it if you don't have much gpu memory;
+- `arch`: specify the architecture, can be either `small` (hidden size = 256) or `base` (hidden size = 512). See [configs/archs](https://github.com/AI-in-Hospitals/Patient-Instructions/tree/master/config/archs);
+- `setup`: specify which setup to use. See options in [config/setups.yaml](https://github.com/AI-in-Hospitals/Patient-Instructions/tree/master/config/setups.yaml), where we provide setups for model variants such as Transformer-based `transformer` and `transformer_Full` and LSTM-based `lstm` and `lstm_Full`.
+
+Here are some examples:
+```
+python train.py --gpus 8 --batch_size 8 --arch base --setup transformer
+python train.py --gpus 8 --batch_size 8 --arch base --setup transformer_Full
+python train.py --gpus 8 --batch_size 4 --accumulate_grad_batches 2 --arch base --setup transformer_Full
+
+python train.py --gpus 8 --batch_size 8 --arch small --setup lstm
+python train.py --gpus 8 --batch_size 8 --arch small --setup lstm_Full
+```
+
+## Evaluation
+```
 
 
 ## Bugs or Questions?
