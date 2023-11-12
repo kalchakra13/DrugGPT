@@ -10,10 +10,10 @@ import numpy as np
 import torch
 import torch.distributed as dist
 
-from .optim import create_optimizer
-from .scheduler import create_scheduler
-from .checkpointer import Checkpointer
-from .eval import coco_caption_eval, autoencode_eval
+from .src.utils.optim import create_optimizer
+from .src.utils.scheduler import create_scheduler
+from .src.utils.checkpointer import Checkpointer
+from .src.utils.eval import coco_caption_eval, autoencode_eval
 
 
 class SmoothedValue(object):
@@ -102,7 +102,7 @@ class MetricLogger(object):
     def update(self, **kwargs):
         for k, v in kwargs.items():
             if k not in self.meters:
-                from utils import SmoothedValue
+                from .src.utils import SmoothedValue
                 self.add_meter(k, SmoothedValue(window_size=self.window_size, fmt=self.fmt))
 
             if isinstance(v, torch.Tensor):
