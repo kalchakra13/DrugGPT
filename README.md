@@ -21,6 +21,15 @@ To access the full model, visit our demo [DrugGPT Demo](https://demo-drug-gpt.ve
 2. After selecting the desired mode and inputting the information, click the 'Submit' button at the bottom of the form to initiate the conversation.
 3. DrugGPT should never be used as medical consultant at the current stage. Please consult to licensed medical professionals for any medical advice.
 
+### Demos on downstream tasks
+The demo videos showing DrugGPT performing downstream tasks will be available at: 
+1. [Multiple Choice Q&A](https://www.loom.com/share/6528968b9b804db19f5d7c5e1554197a?sid=6b6019e4-d8d5-46b3-bf7d-7c4895ec91bb)
+2. [Drug and Dosage Recommendation](https://www.loom.com/share/81e82eb651bc4a208097e5f8dc56e28d?sid=a4ca2143-6e6f-48f0-9863-b6e691f40273)
+3. [Adverse Reaction](https://www.loom.com/share/2b4b91726dfe4a38afe99a56cacd5170?sid=9f0e4480-0b60-48f9-909c-4f1f02c58a82)
+4. [Drug-drug Interaction](https://www.loom.com/share/e0b43a02862248da937cd10b8c7b0284?sid=3eb53ad4-b248-46a0-8ce4-d1f17389071d)
+5. [Pharmacology Q&A](https://www.loom.com/share/5dbac6d2cac9406da717db0572e9d5b6?sid=c8b2827d-533d-42af-ae16-88ecdbb35acc)
+6. [Generalization Study](https://www.loom.com/share/cc7a476209a444fa851fd4b0bd1ea1fd?sid=18c0f238-1260-4af5-a557-4ca9fb04fef6)
+
 ## Clone the repo
 ```
 git clone https://github.com/AI-in-Health/DrugGPT.git
@@ -28,6 +37,52 @@ git clone https://github.com/AI-in-Health/DrugGPT.git
 # clone the following repo to calculate automatic metrics
 cd DrugGPT
 git clone https://github.com/ruotianluo/coco-caption.git 
+```
+
+## Codebase structure
+```
+DrugGPT/ # the root of the repo
+    data
+    ├── README.md
+    ├── _init_.ipynb # scripts for logging, loading, etc.
+    ├── configs
+    │   ├── finetune.yaml      # config file for fine-tuning
+    │   ├── methods.yaml       # config file for methods
+    │   ├── model.yaml         # config file for llama and soft prompt models
+    │   └── train.yaml         # config file for training
+    ├── data
+    │   ├── source.md          # links to the source datasets
+    │   └── preprocessed       # Folder for preprocessed data
+    ├── notebooks              # Folder for notebooks
+    │   └── evaluation.ipynb   # Notebook for evaluation
+    src
+    ├── data
+    │   ├── data_loader.py     # scripts for loading data
+    ├── ensemble
+    │   ├── ensemble_model.py  # the ensemble model structure
+    ├── evaluation
+    │   ├── evaluation_metrics.py # script for evalaution
+    ├── gcn
+    │   ├── dsdg.py # contains code for generating dsdg graph
+    │   ├── gcn_model.py # gcn model used to obtain the graph embedding of dsdg
+    ├── llama
+    │   ├── llama_utils.py # the llama model and the soft prompt
+    ├── prompt
+    │   ├── prompt_manager.py # manages hard prompts
+    ├── prompt_tuning
+    │   ├── soft_prompt_tuning.py # fine-tuning soft prompt
+    └── utils
+        ├── basic.py # basec container
+        ├── checkpointer.py # checkpointer
+        ├── eval.py # evaluation
+        ├── finetune.py # fine-tuning
+        ├── language_model.py # language model
+        ├── loop_evaluate.py # evaluation loop
+        ├── optim.py # optimizer
+        ├── parser.py # parser for different types of outputs
+        ├── prompt_learner.py # prompt learner
+        └── scheduler.py # scheduler
+    
 ```
 
 ## Environment
@@ -62,6 +117,19 @@ pip install scikit-learn plotly
 ```
 Higher version of `torch` and `cuda` can also work.
 
+
+## Download the data
+The source data can be accessed at:
+1. **MedQA-USMLE**: [GitHub](https://github.com/jind11/MedQA) | [PapersWithCode](https://paperswithcode.com/dataset/medqa-usmle)
+2. **MedMCQA**: [MedMCQA Homepage](https://medmcqa.github.io/)
+3. **MMLU-Medicine**: [Hugging Face Datasets](https://huggingface.co/datasets/cais/mmlu)
+4. **ChatDoctor**: [GitHub](https://github.com/Kent0n-Li/ChatDoctor)
+5. **ADE-Corpus-v2**: [Hugging Face Datasets](https://huggingface.co/datasets/ade_corpus_v2)
+6. **Drug-Effects**: [Kaggle](https://www.kaggle.com/datasets/jithinanievarghese/drugs-side-effects-and-medical-condition)
+7. **DDI-Corpus**: [Hugging Face Datasets](https://huggingface.co/datasets/bigbio/ddi_corpus)
+8. **PubMedQA**: [PubMedQA Homepage](https://pubmedqa.github.io/)
+
+The pre-processed data can be accessed under the data folder.
 
 
 ## Bugs or Questions?
