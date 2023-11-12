@@ -44,7 +44,6 @@ git clone https://github.com/ruotianluo/coco-caption.git
 ## Codebase structure
 ```
 DrugGPT/ # the root of the repo
-    data
     ├── README.md
     ├── _init_.ipynb # scripts for logging, loading, etc.
     ├── configs
