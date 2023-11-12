@@ -152,7 +152,6 @@ python train.py --gpus 8 --batch_size 8 --arch small --setup lstm_Full
 ```
 
 ## Evaluation
-```
 
 
 ## Bugs or Questions?
