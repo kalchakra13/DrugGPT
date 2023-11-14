@@ -15,3 +15,10 @@
 ## Preprocessed data
 
 Preprocessed data can be accessed via (contact the authors for access) [Google Drive](https://drive.google.com/drive/folders/1Cd1KdWzCdD0iOUE2HB9BZa8ReVoHVc11?usp=drive_link)
+
+## Preprocessing procedure
+
+The preprocessing procedure is as follows:
+1. Download the raw data from the above links
+2. Randomly select balanced samples (same # of yes or nos or same # of multiple choices) from each dataset
+3. Preprocess the data into csv files
