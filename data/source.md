@@ -10,3 +10,8 @@
 6. **Drug-Effects**: [Kaggle](https://www.kaggle.com/datasets/jithinanievarghese/drugs-side-effects-and-medical-condition)
 7. **DDI-Corpus**: [Hugging Face Datasets](https://huggingface.co/datasets/bigbio/ddi_corpus)
 8. **PubMedQA**: [PubMedQA Homepage](https://pubmedqa.github.io/)
+
+
+## Preprocessed data
+
+Preprocessed data can be accessed via (contact the authors for access) [Google Drive](https://drive.google.com/drive/folders/1Cd1KdWzCdD0iOUE2HB9BZa8ReVoHVc11?usp=drive_link)
