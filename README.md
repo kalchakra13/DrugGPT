@@ -52,8 +52,8 @@ DrugGPT/ # the root of the repo
     │   ├── model.yaml         # config file for llama and soft prompt models
     │   └── train.yaml         # config file for training
     ├── data
-    │   ├── source.md          # links to the source datasets
-    │   └── preprocessed       # Folder for preprocessed data
+    │   └──source.md          # links to the source datasets and preprocessed datasets
+    │   
     ├── notebooks              # Folder for notebooks
     │   └── evaluation.ipynb   # Notebook for evaluation
     src
@@ -131,6 +131,7 @@ The source data can be accessed at:
 8. **PubMedQA**: [PubMedQA Homepage](https://pubmedqa.github.io/)
 
 The pre-processed data can be accessed under the data folder.
+Alternatively, you can download the pre-processed data from [Google Drive](https://drive.google.com/drive/folders/1Cd1KdWzCdD0iOUE2HB9BZa8ReVoHVc11?usp=drive_link) (please send us an email for access).
 
 ## Training
 Here are some key argument to run `train.py`:
@@ -151,13 +152,14 @@ python train.py --gpus 8 --batch_size 8 --arch small --setup lstm_Full
 ```
 
 ## Evaluation
-
+To evaluate the model, use the following command:
+```
+```
+To evaluate other models, use the template provided in notebooks/evaluation.ipynb.
 
 ## Bugs or Questions?
 
 If you encounter any problems when using the code, or want to report a bug, you can open an issue or email {hongjian.zhou@cs.ox.ac.uk, fenglin.liu@eng.ox.ac.uk}. Please try to specify the problem with details so we can help you better and quicker!
-
-
 
 ## Citation
 
