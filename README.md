@@ -3,6 +3,8 @@ This repo contains the original implementation of our paper ***DrugGPT: A Knowle
 
 ![DrugGPT Architecture](./img/flowchart.png)
 ## Updates
+[15/11/2023] We clean our codebase!
+
 [26/10/2023] We make all the codebases available!
 
 [12/10/2023] We release our code on the pre-processing and generation of data and model. 
