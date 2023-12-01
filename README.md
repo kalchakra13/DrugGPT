@@ -189,7 +189,7 @@ Here are some key argument to run `drugGPT_eval.py`:
 ### Examples:
 To evaluate the model, use the following command:
 ```bash
-python3 evaluate.py \
+python3 src/drugGPT_eval.py \
   --openai_key YOUR_OPENAI_API_KEY \
   --hf_key YOUR_HUGGINGFACE_API_KEY \
   --excel_path path/to/DSDG_excel.xlsx \
