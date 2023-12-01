@@ -4,6 +4,17 @@ from langchain.prompts.prompt import PromptTemplate
 
 class PromptManager:
     def __init__(self):
+        """
+            A class for managing prompts for different tasks. The three models are Inquiry Analysis, Knowledge
+            Acquisition, and Evidence Generation. The prompts are generated using PromptTemplate and
+            FewShotPromptTemplate using langchain.
+
+            Attributes:
+                sys_prompts: A dictionary containing the system prompts for each task. The keys are the task names and the
+                values are dictionaries containing the task and answer format.
+                fs_examples: A dictionary containing the few-shot examples for each task. The keys are the task names and the
+                values are dictionaries containing the question and answer.
+        """
         self.sys_prompts = {
             'inquiry_analysis': {
                 'task': 'You are tasked with identifying the drug, symptom, and disease from user inquiry:Drugs: List '

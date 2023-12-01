@@ -3,6 +3,23 @@ import re
 
 
 class EnsembleModel:
+    """
+        This class facilitates the process of inquiry analysis, knowledge acquisition, and evidence generation
+        by orchestrating the interaction between different models and knowledge sources.
+
+        Attributes:
+            prompt_manager (PromptManager): Manages and generates prompts for various tasks.
+            soft_prompt (torch.Tensor): The soft prompt to be used with the LLaMA model.
+            knowledge_base (DSDGGenerator): A knowledge base containing medical information.
+            llama_utils (LLaMAUtils): Utility class for LLaMA model operations.
+            openai_api_key (str): API key for OpenAI services.
+
+        Methods:
+            openai_inference(prompt): Performs inference using OpenAI's GPT-3.5 model.
+            llama_inference(prompt): Performs inference using the LLaMA model with soft prompts.
+            extract_knowledge(ka_response): Extracts relevant knowledge entries based on the KA response.
+            run_inference(input_data): Orchestrates the complete inference process involving IA, KA, and EG steps.
+        """
     def __init__(self, prompt_manager, soft_prompt, knowledge_base, llama_utils, openai_api_key):
         self.prompt_manager = prompt_manager
         self.soft_prompt = soft_prompt

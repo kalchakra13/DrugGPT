@@ -10,6 +10,29 @@ logging.basicConfig(level=logging.INFO)
 
 class DSDGGenerator:
     def __init__(self, excel_path, embd_model_name='all-MiniLM-L6-v2', tau=0.1, k=5):
+        """
+            A class for generating and managing a Disease-Symptom-Drug Graph (DSDG).
+
+            This class creates a graph representation of diseases and drugs, along with their associated properties,
+            and provides methods for graph operations and embeddings calculation.
+
+            Attributes:
+                excel_path (str): Path to the Excel file containing disease and drug information.
+                embd_model (SentenceTransformer): The embedding model used to encode text data.
+                tau (float): Temperature parameter for softmax calculation in distance metric.
+                k (int): The number of top-k elements to consider in certain calculations.
+                G (networkx.Graph): The generated graph representing diseases and drugs.
+
+            Methods:
+                generate_dsdg_dict(): Generates a dictionary from the Excel data for diseases and drugs.
+                get_average_symptoms_embedding(): Calculates the average embedding of all symptoms in the dataset.
+                get_knowledge_category(name, category): Retrieves specific knowledge category data for a given entity.
+                calculate_distance(embedding1, embedding2): Computes a distance metric between two embeddings.
+                get_top_k(arr): Returns indices of top-k elements in an array.
+                _initialize_graph(): Initializes and populates the graph based on the dsdg_dict data.
+                get_graph(): Returns the constructed graph.
+        """
+
         self.excel_path = excel_path
         self.embd_model = SentenceTransformer(embd_model_name)
         self.tau = tau

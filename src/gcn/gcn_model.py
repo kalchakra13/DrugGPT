@@ -8,6 +8,9 @@ import numpy as np
 
 
 class GraphConvolutionalNetwork(nn.Module):
+    """
+        A class implementing a Graph Convolutional Network (GCN) for obtaining the prefix embedding.
+    """
     def __init__(self, input_dim, hidden_dim, output_dim):
         super(GraphConvolutionalNetwork, self).__init__()
 
@@ -25,7 +28,24 @@ class GraphConvolutionalNetwork(nn.Module):
         return x
 
 
-def get_initial_prefix(G, symptoms_embedding, hidden_dim=128, output_dim=3404, n_soft_prompts=1):
+def get_initial_prefix(G, symptoms_embedding, hidden_dim=128, output_dim=3404, n_soft_prompts=100):
+    """
+        Generates an initial prefix for soft prompt tuning using a GCN.
+
+        This function initializes a GCN model to process the graph data and compute node embeddings.
+        It then combines global graph embeddings with disease-specific embeddings to form an initial
+        prefix for soft prompt tuning.
+
+        Args:
+            G (nx.Graph): A NetworkX graph representing the data.
+            symptoms_embedding (torch.Tensor): Embedding of the symptoms.
+            hidden_dim (int): The hidden dimension size for the GCN. Defaults to 128.
+            output_dim (int): The output dimension size for the GCN. Defaults to 3404.
+            n_soft_prompts (int): Number of soft prompts to concatenate. Defaults to 100.
+
+        Returns:
+            torch.Tensor: The initial prefix for soft prompt tuning.
+        """
     # Initialize GCN model
     input_dim = G.nodes[list(G.nodes())[0]]['embedding'].shape[0]
     model = GraphConvolutionalNetwork(input_dim, hidden_dim, output_dim/2)

@@ -8,9 +8,22 @@ logger = logging.getLogger(__name__)
 
 
 class SoftEmbedding(nn.Module):
-    """Class for managing soft embeddings."""
+    """
+    A class for managing soft embeddings.
 
-    def __init__(self, wte: nn.Embedding, n_tokens: int = 20, random_range: float = 0.5,
+    Attributes:
+        wte (nn.Embedding): The word token embeddings of the base model.
+        n_tokens (int): Number of tokens for the soft embeddings. Defaults to 100.
+        learned_embedding (nn.Parameter): The learnable soft embeddings.
+
+    Methods:
+        initialize_embedding(): Initializes the soft embeddings, either from
+                                the vocabulary or randomly.
+        forward(input_ids): Computes the forward pass, concatenating the soft
+                            embeddings with the input embeddings.
+    """
+
+    def __init__(self, wte: nn.Embedding, n_tokens: int = 100, random_range: float = 0.5,
                  initialize_from_vocab: bool = True):
         super(SoftEmbedding, self).__init__()
         self.wte = wte
@@ -33,7 +46,30 @@ class SoftEmbedding(nn.Module):
 
 
 class LLaMAUtils:
-    """Class for managing LLaMA models and utilities."""
+    """
+    A utility class for managing LLaMA models and related operations.
+
+    LLaMAUtils facilitates the initialization, management, and use of LLaMA models, particularly in
+    conjunction with soft embeddings for prompt tuning tasks.
+
+    Attributes:
+        soft_embedding (SoftEmbedding): The soft embedding module.
+        tokenizer (AutoTokenizer): Tokenizer for the LLaMA model.
+        model (AutoModelForCausalLM): The LLaMA model.
+        configs (dict): Configuration parameters for the model.
+        max_length (int): Maximum length for model generation.
+        device (torch.device): The device on which the model operates.
+
+    Methods:
+        initialize_soft_embedding(): Initializes the soft embedding module.
+        load_soft_prompt(checkpoint_file): Loads soft prompt parameters from a checkpoint file.
+        llama_inference(prompt, use_soft_prompt): Runs inference using the LLaMA model with an optional soft prompt.
+        initialize_model(): Initializes the LLaMA model based on the configuration.
+        initialize_tokenizer(): Initializes the tokenizer for the model.
+        llama_training_forward(input_ids): Performs a forward pass for training purposes.
+        save_model(save_path): Saves the model and tokenizer to the specified path.
+        load_model(load_path): Loads the model and tokenizer from the specified path.
+    """
 
     def __init__(self, configs, soft_prompt_checkpoint=None):
         self.soft_embedding = None

@@ -7,6 +7,28 @@ from tqdm import tqdm
 
 
 class SoftPromptTuner:
+    """
+        A class dedicated to fine-tuning the soft prompts for knowledge acquisition tasks.
+
+        This class facilitates the training and validation processes of the soft prompts, which are learnable
+        parameters used to adapt the LLaMA model for specific tasks without altering the original pre-trained model weights.
+
+        Attributes:
+            llama_utils (LLaMAUtils): An instance of the LLaMAUtils class for LLaMA model operations.
+            config (dict): A configuration dictionary containing training parameters.
+            criterion (torch.nn.Module): The loss function used for training.
+            writer (SummaryWriter): Tensorboard writer for logging training metrics.
+            best_val_loss (float): The best validation loss achieved during training.
+
+        Methods:
+            get_optimizer(): Initializes and returns the optimizer based on configuration.
+            get_lr_scheduler(optimizer, num_training_steps, num_warmup_steps): Creates a learning rate scheduler.
+            train_epoch(train_loader, optimizer, lr_scheduler, epoch): Conducts training for one epoch.
+            validate_epoch(val_loader, epoch): Conducts validation for one epoch.
+            save_checkpoint(filename="soft_prompt_checkpoint.pth"): Saves the current best model checkpoint.
+            load_checkpoint(filename): Loads a model checkpoint.
+            train(train_loader, val_loader): Initiates the training and validation process over multiple epochs.
+        """
 
     def __init__(self, llama_utils, config):
         self.llama_utils = llama_utils
@@ -108,8 +130,3 @@ class SoftPromptTuner:
 
         self.writer.close()
 
-# Initialize your llama_utils and DataLoader objects (train_loader, val_loader)
-# Initialize your config dictionary
-# Then use the following to run:
-# tuner = SoftPromptTuner(llama_utils, config)
-# tuner.train(train_loader, val_loader)
