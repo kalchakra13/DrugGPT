@@ -2,11 +2,11 @@ import pandas as pd
 from tqdm import tqdm
 import argparse
 import os
-from .ensemble.ensemble_model import EnsembleModel
-from .prompt.prompt_manager import PromptManager
-from .llama.llama_utils import LLaMAUtils, SoftEmbedding
-from .gcn.dsdg import DSDGGenerator
-from .utils.parser import binary_parser, text_parser, mc_parser
+from DrugGPT.src.ensemble.ensemble_model import EnsembleModel
+from DrugGPT.src.prompt.prompt_manager import PromptManager
+from DrugGPT.src.llama.llama_utils import LLaMAUtils, SoftEmbedding
+from DrugGPT.src.gcn.dsdg import DSDGGenerator
+from DrugGPT.src.utils.parser import binary_parser, text_parser, mc_parser
 import logging
 import yaml
 

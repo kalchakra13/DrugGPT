@@ -57,7 +57,7 @@ DrugGPT/ # the root of the repo
     │   └──source.md          # links to the source datasets and preprocessed datasets
     │   
     ├── notebooks              # Folder for notebooks
-    │   └── evaluation.ipynb   # Notebook for evaluation
+    │   └── evaluation.ipynb   # Notebook for evaluation of benchmark models
     src
     ├── data
     │   ├── data_loader.py     # scripts for loading data
@@ -74,18 +74,15 @@ DrugGPT/ # the root of the repo
     │   ├── prompt_manager.py # manages hard prompts
     ├── prompt_tuning
     │   ├── soft_prompt_tuning.py # fine-tuning soft prompt
-    └── utils
-        ├── basic.py # basec container
-        ├── checkpointer.py # checkpointer
-        ├── eval.py # evaluation
-        ├── finetune.py # fine-tuning
-        ├── language_model.py # language model
-        ├── loop_evaluate.py # evaluation loop
-        ├── optim.py # optimizer
-        ├── parser.py # parser for different types of outputs
-        ├── prompt_learner.py # prompt learner
-        └── scheduler.py # scheduler
-    
+    ├── utils
+    │   ├── basic.py # basec container
+    │   ├── checkpointer.py # checkpointer
+    │   ├── train.py # fine-tuning
+    │   ├── language_model.py # language model
+    │   ├── optim.py # optimizer
+    │   ├── parser.py # parser for different types of outputs
+    │   └── scheduler.py # scheduler
+    └── drugGPT_eval # script for evaluating DrugGPT
 ```
 
 ## Environment

@@ -143,18 +143,18 @@ class PromptManager:
         return sys_template.format(**self.sys_prompts[task_type]) + '\n' + fs_template.format(**self.fs_examples[task_type])
 
 
-# Initialize the PromptManager
-prompt_manager = PromptManager()
-
-# Generate system prompt for Inquiry Analysis
-sys_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis")
-print("System Prompt for Inquiry Analysis:\n", sys_prompt_inquiry)
-
-# Generate few-shot prompt for Inquiry Analysis
-fs_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis")
-print("\nFew-Shot Prompt for Inquiry Analysis:\n", fs_prompt_inquiry)
-
-# Generate system prompt for Knowledge Acquisition
-sys_prompt_knowledge = prompt_manager.generate_combined_prompt("knowledge_acquisition")
-print("\nSystem Prompt for Knowledge Acquisition:\n", sys_prompt_knowledge)
+# # Initialize the PromptManager
+# prompt_manager = PromptManager()
+#
+# # Generate system prompt for Inquiry Analysis
+# sys_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis")
+# print("System Prompt for Inquiry Analysis:\n", sys_prompt_inquiry)
+#
+# # Generate few-shot prompt for Inquiry Analysis
+# fs_prompt_inquiry = prompt_manager.generate_combined_prompt("inquiry_analysis")
+# print("\nFew-Shot Prompt for Inquiry Analysis:\n", fs_prompt_inquiry)
+#
+# # Generate system prompt for Knowledge Acquisition
+# sys_prompt_knowledge = prompt_manager.generate_combined_prompt("knowledge_acquisition")
+# print("\nSystem Prompt for Knowledge Acquisition:\n", sys_prompt_knowledge)
 
