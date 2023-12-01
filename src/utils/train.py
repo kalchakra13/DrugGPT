@@ -46,7 +46,7 @@ def main():
     llama_utils.set_input_embeddings(soft_embedding)
 
     # Load dataset
-    train_loader, val_loader = get_data_loaders(tokenizer, '../../data/FT1.xml', DATA_LOADER_CONFIGS)
+    train_loader, val_loader = get_data_loaders(tokenizer, '../../data/FT1.csv', DATA_LOADER_CONFIGS)
 
     # Initialize Soft Prompt Tuner
     soft_prompt_tuner = SoftPromptTuner(llama_utils, SOFT_PROMPT_CONFIGS)
@@ -84,7 +84,6 @@ def get_folder_name(config):
     str: Generated folder name.
     """
     # Example: Generate a folder name by concatenating some config parameters
-    # Modify this according to your needs
     folder_name_parts = [
         config.get('model_name', 'model'),
         config.get('learning_rate', 'lr'),

@@ -36,8 +36,8 @@ class EnsembleModel:
         )
         return response.choices[0].text.strip()
 
-    def llama_inference(self, prompt):
-        return self.llama_utils.llama_inference(prompt)
+    def llama_inference(self, prompt, use_soft_prompt=True):
+        return self.llama_utils.llama_inference(prompt, use_soft_prompt=use_soft_prompt)
 
     def extract_knowledge(self, ka_response):
         # Regex to extract the knowledge numbers needed
@@ -60,10 +60,13 @@ class EnsembleModel:
         combined_knowledge = '\n'.join(knowledge_entries)
         return combined_knowledge
 
-    def run_inference(self, input_data):
+    def run_inference(self, input_data, use_openai=False):
         # Inquiry Analysis (IA) using GPT-3.5
         ia_combined_prompt = self.prompt_manager.generate_combined_prompt("inquiry_analysis")
-        ia_response = self.openai_inference(ia_combined_prompt + input_data)
+        if use_openai:
+            ia_response = self.openai_inference(ia_combined_prompt + input_data)
+        else:
+            ia_response = self.llama_inference(ia_combined_prompt + input_data, use_soft_prompt=False)
 
         # Knowledge Acquisition (KA) using LLaMA model with soft prompts
         ka_combined_prompt = self.prompt_manager.generate_combined_prompt("knowledge_acquisition")
@@ -74,6 +77,10 @@ class EnsembleModel:
 
         # Evidence Generation (EG) using GPT-3.5, integrating the knowledge from the Knowledge Base
         eg_combined_prompt = self.prompt_manager.generate_combined_prompt("evidence_generation")
-        eg_response = self.openai_inference(eg_combined_prompt + '\nKnowledge:\n' + dsdg_enriched_input)
+        if use_openai:
+            eg_response = self.openai_inference(eg_combined_prompt + '\nKnowledge:\n' + dsdg_enriched_input)
+        else:
+            eg_response = self.llama_inference(eg_combined_prompt + '\nKnowledge:\n' + dsdg_enriched_input,
+                                               use_soft_prompt=False)
 
         return eg_response

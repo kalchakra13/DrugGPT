@@ -136,6 +136,7 @@ The pre-processed data can be accessed under the data folder.
 Alternatively, you can download the pre-processed data from [Google Drive](https://drive.google.com/drive/folders/1Cd1KdWzCdD0iOUE2HB9BZa8ReVoHVc11?usp=drive_link) (please send us an email for access).
 
 ## Training
+### Arguments:
 Here are some key argument to run `train.py`:
 - `--ckpt_name`: The filename for the model checkpoint. Default is `model_state_latest.pth`.
 - `--config`: Path to the configuration file. Default is set to `configs/model.yaml`.
@@ -156,15 +157,49 @@ Here are some key argument to run `train.py`:
 - `--evaluate`: Use this flag to perform evaluation only.
 - `--msg`: An additional message for logging purposes.
 
+### Examples:
 Example usage:
+To access the train.py script, run the following command:
 ```bash
-python train.py --dataset FT1 --train_file path/to/FT1_train.xml --val_file path/to/FT1_val.xml --config configs/model.yaml --output_root output/FT1_training
+cd src
+cd utils
+```
+To run the training process, use the following command:
+```bash
+python3 train.py --dataset FT1 --train_file path/to/FT1_train.xml --val_file path/to/FT1_val.xml --config configs/model.yaml --output_root output/FT1_training
 ```
 
 ## Evaluation
+### Prerequisites:
+Hugging Face API for running inference with DrugGPT, which is built upon the [LLaMA2](https://huggingface.co/docs/transformers/model_doc/llama2) model. Please refer to [Hugging Face API](https://huggingface.co/docs/api-inference/quicktour) for more details.
+OpenAI key if you plan to use the latest GPT models for conversational generation. Please refer to the [OpenAI API](https://openai.com/blog/openai-api) For one-shot generation, we recommend set use_open_ai to false.
+
+### Arguements:
+Here are some key argument to run `drugGPT_eval.py`:
+- `--openai_key`: Your OpenAI API key for accessing GPT models.
+- `--hf_key`: Your Hugging Face API key for accessing models from the Hugging Face Hub.
+- `--excel_path`: Path to the Excel file containing the DSDG (Drug and Disease Graph) data.
+- `--dataset_name`: The name of the dataset for evaluation. Choose from predefined options like pubmedqa, ade, etc.
+- `--evaluation_set_path`: Path to the evaluation dataset file.
+- `--log_results`: Enable this flag to log evaluation results.
+- `--store_results`: Enable this flag to store evaluation results in a file.
+- `--log_wrong_answers_only`: Log only the wrong answers for a concise output.
+- `--use_open_ai`: Use this flag to enable the use of OpenAI API for inference.
+
+### Examples:
 To evaluate the model, use the following command:
+```bash
+python3 evaluate.py \
+  --openai_key YOUR_OPENAI_API_KEY \
+  --hf_key YOUR_HUGGINGFACE_API_KEY \
+  --excel_path path/to/DSDG_excel.xlsx \
+  --dataset_name pubmedqa \
+  --evaluation_set_path path/to/pubmedqa_evaluation_data.csv \
+  --log_results \
+  --store_results
+
 ```
-```
+### Baseline models
 To evaluate other models, use the template provided in notebooks/evaluation.ipynb.
 
 ## Bugs or Questions?
