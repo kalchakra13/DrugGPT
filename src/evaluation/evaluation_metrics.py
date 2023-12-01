@@ -26,7 +26,7 @@ class Evaluation:
         f1_score = 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0
         return precision, recall, f1_score
 
-    def evaluate(self, dataset_name, evaluation_set):
+    def evaluate(self, dataset_name, evaluation_set, full_responses=None):
         print(f"\nEvaluating: {dataset_name}")
         slice_size = len(evaluation_set['sample'])
 

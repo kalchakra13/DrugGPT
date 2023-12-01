@@ -35,19 +35,49 @@ class SoftEmbedding(nn.Module):
 class LLaMAUtils:
     """Class for managing LLaMA models and utilities."""
 
-    def __init__(self, configs, soft_embedding=None):
+    def __init__(self, configs, soft_prompt_checkpoint=None):
+        self.soft_embedding = None
         self.tokenizer = None
         self.model = None
         logger.info("Initializing LLaMA Utils...")
         self.configs = configs
         self.initialize_model()
         self.initialize_tokenizer()
-        self.soft_embedding = soft_embedding
         self.max_length = configs.get('max_length', 512)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
-        if self.soft_embedding is not None:
-            self.set_input_embeddings()
+        # Initialize or load soft embedding
+        if soft_prompt_checkpoint:
+            self.load_soft_prompt(soft_prompt_checkpoint)
+        else:
+            self.initialize_soft_embedding()
+
+    def initialize_soft_embedding(self):
+        wte = self.model.get_input_embeddings()
+        self.soft_embedding = SoftEmbedding(wte)
+        logger.info("Soft embedding initialized.")
+
+    def load_soft_prompt(self, checkpoint_file):
+        checkpoint = torch.load(checkpoint_file)
+        self.soft_embedding = SoftEmbedding(self.model.get_input_embeddings())
+        self.soft_embedding.load_state_dict(checkpoint['soft_prompt_params'])
+        logger.info("Soft prompt loaded from checkpoint.")
+
+    def llama_inference(self, prompt: str, use_soft_prompt=True):
+        input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids.to(self.device)
+
+        if use_soft_prompt and self.soft_embedding is not None:
+            # Generate embeddings using soft prompt
+            soft_prompt_embedding = self.soft_embedding(input_ids)
+            output = self.model.generate(input_ids=input_ids,
+                                         inputs_embeds=soft_prompt_embedding,
+                                         max_length=self.max_length)
+        else:
+            # Use default model embeddings
+            output = self.model.generate(input_ids=input_ids, max_length=self.max_length)
+
+        decoded_output = self.tokenizer.decode(output[0], skip_special_tokens=True)
+        return decoded_output
 
     def initialize_model(self):
         self.model = AutoModelForCausalLM.from_pretrained(
@@ -57,22 +87,6 @@ class LLaMAUtils:
 
     def initialize_tokenizer(self):
         self.tokenizer = AutoTokenizer.from_pretrained(self.configs['model_name'])
-
-    def set_input_embeddings(self):
-        if self.soft_embedding:
-            logger.info("Setting input embeddings for the model.")
-            self.model.set_input_embeddings(self.soft_embedding)
-
-    def llama_inference(self, prompt: str, use_soft_prompt=True):
-        logger.info(f"Running inference for prompt: {prompt[:50]}...")
-        input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids.to(self.device)
-        if use_soft_prompt and self.soft_embedding is not None:
-            full_embedding = self.soft_embedding(input_ids)
-            output = self.model.generate(inputs_embeds=full_embedding, max_length=self.max_length)
-        else:
-            output = self.model.generate(input_ids=input_ids, max_length=self.max_length)
-        decoded_output = self.tokenizer.decode(output[0], skip_special_tokens=True)
-        return decoded_output
 
     def llama_training_forward(self, input_ids):
         logger.info("Running forward pass for training...")

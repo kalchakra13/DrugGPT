@@ -137,20 +137,28 @@ Alternatively, you can download the pre-processed data from [Google Drive](https
 
 ## Training
 Here are some key argument to run `train.py`:
-- `gpus`: specify the number of gpus;
-- `batch_size`: specify the number of samples in a batch;
-- `accumulate_grad_batches`: use it if you don't have much gpu memory;
-- `arch`: specify the architecture, can be either `small` (hidden size = 256) or `base` (hidden size = 512). See [configs/archs](https://github.com/AI-in-Hospitals/Patient-Instructions/tree/master/config/archs);
-- `setup`: specify which setup to use. See options in [config/setups.yaml](https://github.com/AI-in-Hospitals/Patient-Instructions/tree/master/config/setups.yaml), where we provide setups for model variants such as Transformer-based `transformer` and `transformer_Full` and LSTM-based `lstm` and `lstm_Full`.
+- `--ckpt_name`: The filename for the model checkpoint. Default is `model_state_latest.pth`.
+- `--config`: Path to the configuration file. Default is set to `configs/model.yaml`.
+- `--output_root`: Root directory for saving output files. Default is `output/training`.
 
-Here are some examples:
-```
-python train.py --gpus 8 --batch_size 8 --arch base --setup transformer
-python train.py --gpus 8 --batch_size 8 --arch base --setup transformer_Full
-python train.py --gpus 8 --batch_size 4 --accumulate_grad_batches 2 --arch base --setup transformer_Full
+- `--dataset`: Choose the dataset to use for training.
+- `--train_file`: Path to the training dataset file.
+- `--val_file`: Path to the validation dataset file.
+- `--test_file`: Path to the test dataset file.
 
-python train.py --gpus 8 --batch_size 8 --arch small --setup lstm
-python train.py --gpus 8 --batch_size 8 --arch small --setup lstm_Full
+- `--device`: Specify the device for training, typically `cuda` for GPU training.
+- `--seed`: Set a random seed for reproducibility. Default is `42`.
+- `--distributed`: Enable this flag to use distributed training.
+- `--dist_url`: URL used to set up distributed training. Default is `env://`.
+- `--world_size`: Number of distributed processes. Default is `1`.
+
+- `--resume`: Resume training from the latest checkpoint.
+- `--evaluate`: Use this flag to perform evaluation only.
+- `--msg`: An additional message for logging purposes.
+
+Example usage:
+```bash
+python train.py --dataset FT1 --train_file path/to/FT1_train.xml --val_file path/to/FT1_val.xml --config configs/model.yaml --output_root output/FT1_training
 ```
 
 ## Evaluation

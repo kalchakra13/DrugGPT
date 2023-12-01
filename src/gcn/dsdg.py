@@ -32,6 +32,23 @@ class DSDGGenerator:
                                 'pharmacodynamics', 'experimental_results']}
         return dsdg_dict
 
+    def get_average_symptoms_embedding(self):
+        symptom_embeddings = []
+        for disease, categories in self.dsdg_dict.items():
+            if 'symptoms' in categories:
+                symptoms = categories['symptoms']
+                # Encode symptoms to embeddings
+                symptom_embedding = self.embd_model.encode(symptoms)
+                symptom_embeddings.append(symptom_embedding)
+
+        # Calculate the average embedding
+        if symptom_embeddings:
+            avg_embedding = np.mean(symptom_embeddings, axis=0)
+        else:
+            avg_embedding = np.zeros(self.embd_model.get_sentence_embedding_dimension())
+
+        return avg_embedding
+
     def get_knowledge_category(self, name, category):
         return self.dsdg_dict.get(name, {}).get(category, 'Unknown')
 

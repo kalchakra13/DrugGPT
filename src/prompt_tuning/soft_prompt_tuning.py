@@ -78,9 +78,15 @@ class SoftPromptTuner:
 
         return val_loss
 
-    def save_checkpoint(self):
-        torch.save(self.llama_utils.model.state_dict(), "best_model.pth")
-        print(f"Best model saved with validation loss: {self.best_val_loss:.4f}")
+    def save_checkpoint(self, filename="soft_prompt_checkpoint.pth"):
+        checkpoint = {'soft_prompt_params': self.soft_embedding.state_dict()}
+        torch.save(checkpoint, filename)
+        print(f"Checkpoint saved with validation loss: {self.best_val_loss:.4f}")
+
+    def load_checkpoint(self, filename):
+        checkpoint = torch.load(filename)
+        self.soft_embedding.load_state_dict(checkpoint['soft_prompt_params'])
+        print("Checkpoint loaded.")
 
     def train(self, train_loader, val_loader):
         optimizer = self.get_optimizer()

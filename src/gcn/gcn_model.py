@@ -25,14 +25,12 @@ class GraphConvolutionalNetwork(nn.Module):
         return x
 
 
-def get_initial_prefix(G, symptoms_embedding, embd_model, hidden_dim=128, output_dim=128):
+def get_initial_prefix(G, symptoms_embedding, hidden_dim=128, output_dim=3404, n_soft_prompts=1):
     # Initialize GCN model
     input_dim = G.nodes[list(G.nodes())[0]]['embedding'].shape[0]
-    model = GraphConvolutionalNetwork(input_dim, hidden_dim, output_dim)
+    model = GraphConvolutionalNetwork(input_dim, hidden_dim, output_dim/2)
 
     # Prepare input for GCN
-    # Assume node_ids is a dictionary mapping from node name to an integer index
-    # and node_embeddings is a matrix of shape [num_nodes, input_dim]
     node_ids = {node: i for i, node in enumerate(G.nodes())}
     node_embeddings = torch.tensor([G.nodes[node]['embedding'] for node in G.nodes()])
     edge_index = torch.tensor([[node_ids[src], node_ids[dst]] for src, dst in G.edges()]).t().contiguous()
@@ -44,7 +42,7 @@ def get_initial_prefix(G, symptoms_embedding, embd_model, hidden_dim=128, output
     # Calculate the global graph embedding by averaging all node embeddings
     g_a = torch.mean(out, dim=0)
 
-    # Calculate cosine similarity between symptoms_embedding and all disease nodes to find the most similar one
+    # Calculate cosine similarity between symptoms_embedding and all disease nodes
     disease_nodes = [node for node, attr in G.nodes(data=True) if attr['type'] == 'disease']
     disease_embeddings = torch.tensor([G.nodes[node]['embedding'] for node in disease_nodes])
     disease_similarities = cosine_similarity(symptoms_embedding.reshape(1, -1), disease_embeddings)
@@ -54,7 +52,10 @@ def get_initial_prefix(G, symptoms_embedding, embd_model, hidden_dim=128, output
     # Combine g_a and g_d to get the initial prefix g for the soft prompt tuning
     g = torch.cat((g_a, g_d), dim=0)
 
-    return g
+    # Concatenate n_soft_prompts of g to create the final soft prompt
+    final_soft_prompt = torch.cat([g for _ in range(n_soft_prompts)], dim=0)
+
+    return final_soft_prompt
 
 # Example usage:
 # G is the graph obtained from DSDGGenerator
