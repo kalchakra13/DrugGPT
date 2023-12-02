@@ -225,7 +225,7 @@ python3 train.py --dataset FT1 --train_file path/to/FT1_train.xml --val_file pat
 
 ## Evaluation
 ### Prerequisites:
-Hugging Face API for running inference with DrugGPT, which is built upon the [LLaMA](https://huggingface.co/docs/transformers/model_doc/llama2) model. Please refer to [Hugging Face API](https://huggingface.co/docs/api-inference/quicktour) for more details.
+Hugging Face API for running inference with DrugGPT, which is built upon the [LLaMA](https://huggingface.co/docs/transformers/model_doc/llama2) architecture. Please refer to [Hugging Face API](https://huggingface.co/docs/api-inference/quicktour) for more details.
 OpenAI key if you plan to use the latest GPT models for conversational generation. Please refer to the [OpenAI API](https://openai.com/blog/openai-api). For one-shot generation, we recommend set use_open_ai to false as OpenAI is not a necceary component for DrugGPT.
 The LLaMA implementation can be accessed in the [LLaMA GitHub repo](https://github.com/facebookresearch/llama), however, it might be computational expensive to run the inference.
 If you decide to use the llama inference api, here is the [link](https://ai.meta.com/resources/models-and-libraries/llama-downloads/) to require access, in addition to the Hugging Face API key.
