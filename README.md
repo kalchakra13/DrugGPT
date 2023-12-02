@@ -9,6 +9,23 @@ This repo contains the original implementation of our paper ***DrugGPT: A Knowle
 
 [12/10/2023] We release our code on the pre-processing and generation of data and model. 
 
+## Disclaimer
+
+### Important Notice Regarding the Use of DrugGPT
+
+DrugGPT is an advanced tool developed for educational and research purposes. It is crucial to understand the following points regarding its usage:
+
+- **Not a Medical Device**: DrugGPT does **not** qualify as a medical device. It should not be used for making clinical decisions or for diagnostic purposes.
+- **Prohibited for Direct Medical Use**: The use of DrugGPT for direct medical purposes or as a substitute for professional medical advice is strictly prohibited.
+- **Usage by Medical Experts**: While medical experts may use DrugGPT to gain insights or aid in research, it should be done with caution. DrugGPT's outputs should always be cross-verified with established medical knowledge and clinical guidelines.
+- **Educational Tool**: The general public may use DrugGPT as an educational tool to learn about medical literature. However, it should not be relied upon for personal health decisions or medical advice.
+- **Responsibility of Users**: Users are responsible for any consequences resulting from the use of DrugGPT. The developers of DrugGPT assume no responsibility for decisions or actions taken based on its outputs.
+- **Continuous Development**: DrugGPT is in continuous development, and its outputs should be interpreted within the context of its current capabilities and limitations.
+
+By using DrugGPT, you acknowledge and agree to these terms and conditions. It is imperative to consult with a qualified healthcare provider for any health-related questions or concerns.
+
+
+
 ## Pre-trained Model
 The trained model is available at [Google Drive](https://drive.google.com/file/d/1jyavc13OdwzVZaTDdo6oEm4_adjr_nO8/view?usp=sharing).
 
@@ -137,28 +154,20 @@ The data preprocessing for DrugGPT involves several crucial steps to ensure the 
 
 1. **Data Cleaning**: 
    - Remove duplicate and contaminated data to ensure the uniqueness and purity of the dataset.
-
 2. **Relevance Filtering**: 
    - For datasets not entirely drug-related, irrelevant data is filtered out to maintain focus on drug-related content.
-
 3. **Data Organization**: 
    - Organize the data into columns for queries, answers, and explanations (if available). The explanation column is particularly useful for hallucination assessment during model training.
-
 4. **Expert Review**: 
    - Conduct a manual inspection with medical experts to verify that the data quality aligns with drug analysis processes in medical settings.
-
-5. **Data Storage**: 
+5. **Evaluation Data Storage**: 
    - Store the preprocessed files in CSV formats, tagged with either _data or _answer to indicate their content type.
-
-6. **Sample Collection**: 
+6. **Finetuning Sample Collection**: 
    - Collect 1000 data samples curated from various datasets, including PubmedQA, MedMCQA, ADE-Corpus-V2, DDI-corpus, and Drug-Effects. These datasets cover the five downstream tasks of DrugGPT.
-
 7. **Preparation for Knowledge-based Instruction Prompt Tuning**: 
    - Store the 1000 data samples specifically prepared for Knowledge-based Instruction Prompt Tuning, a novel process based on PEFT (refer to [PEFT paper](https://arxiv.org/abs/2104.08691)) modified to incorporate our DSDG graph in the KA-LLM inference.
-
-8. **Dataset Variations**: 
+8. **Finetuning Data Storage**: 
    - Randomly sample the data into three distinct datasets: FT1, FT2, and FT3.csv, to provide diverse training scenarios.
-
 9. **Data Storage Location**: 
    - All prepared datasets are stored in the `data` folder within the project structure.
 
