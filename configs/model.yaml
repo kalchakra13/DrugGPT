@@ -10,7 +10,7 @@ LLAMA_CONFIGS:
   max_length: 500
 
 SOFT_PROMPT_CONFIGS:
-  epochs: 10
+  epochs: 20
   learning_rate: 0.001
   optimizer: 'Adam'
   weight_decay: 0.0
@@ -30,7 +30,7 @@ GCN_CONFIGS:
     'warmup_ratio': 0.1,
 
 DATA_LOADER_CONFIGS:
-  batch_size: 1
+  batch_size: 32
   max_length: 512
   val_split: 0.2
   shuffle: true

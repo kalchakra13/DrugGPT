@@ -131,7 +131,65 @@ The source data can be accessed at:
 
 The preprocessed data might be too large for direct access, you can download the pre-processed data from [Google Drive](https://drive.google.com/drive/folders/1Cd1KdWzCdD0iOUE2HB9BZa8ReVoHVc11?usp=drive_link) (please send us an email for access).
 
+### Data Preprocessing Process
+
+The data preprocessing for DrugGPT involves several crucial steps to ensure the quality and relevance of the data used for training and fine-tuning the model. Below is an overview of the process:
+
+1. **Data Cleaning**: 
+   - Remove duplicate and contaminated data to ensure the uniqueness and purity of the dataset.
+
+2. **Relevance Filtering**: 
+   - For datasets not entirely drug-related, irrelevant data is filtered out to maintain focus on drug-related content.
+
+3. **Data Organization**: 
+   - Organize the data into columns for queries, answers, and explanations (if available). The explanation column is particularly useful for hallucination assessment during model training.
+
+4. **Expert Review**: 
+   - Conduct a manual inspection with medical experts to verify that the data quality aligns with drug analysis processes in medical settings.
+
+5. **Data Storage**: 
+   - Store the preprocessed files in CSV formats, tagged with either _data or _answer to indicate their content type.
+
+6. **Sample Collection**: 
+   - Collect 1000 data samples curated from various datasets, including PubmedQA, MedMCQA, ADE-Corpus-V2, DDI-corpus, and Drug-Effects. These datasets cover the five downstream tasks of DrugGPT.
+
+7. **Preparation for Knowledge-based Instruction Prompt Tuning**: 
+   - Store the 1000 data samples specifically prepared for Knowledge-based Instruction Prompt Tuning, a novel process based on PEFT (refer to [PEFT paper](https://arxiv.org/abs/2104.08691)) modified to incorporate our DSDG graph in the KA-LLM inference.
+
+8. **Dataset Variations**: 
+   - Randomly sample the data into three distinct datasets: FT1, FT2, and FT3.csv, to provide diverse training scenarios.
+
+9. **Data Storage Location**: 
+   - All prepared datasets are stored in the `data` folder within the project structure.
+
+This meticulous preprocessing ensures that DrugGPT is trained on high-quality, relevant data, laying a strong foundation for accurate and reliable drug-related predictions and analysis.
+
+
 ## Training
+The training is only applicable to the finetuning the KA-LLM (Knowledge Acquisition) model. Which is a component of the ensembled DrugGPT specialized in locating specific knowledge from the DSDG (Drug and Symptom Disease Graph). 
+The training is intended to align the features in DSDG with the natural language input which KA-LLM takes as the input for downstream tasks. 
+
+### Fine-Tuning Hyperparameters
+
+Below is a table of the hyperparameters used for fine-tuning the Knowledge Acquisition Language Model (KA-LLM):
+
+| Parameter                | Value           | Description                                                              |
+|--------------------------|-----------------|--------------------------------------------------------------------------|
+| Model                    | LLaMA-7B        | The base language model used for fine-tuning.                            |
+| Soft Prompt Length       | 100             | Length of the soft prompt used in tuning.                                |
+| Epochs                   | 20              | Number of training epochs.                                               |
+| Learning Rate            | 1e-3            | Learning rate for the optimizer.                                         |
+| Optimizer                | AdamW           | The optimization algorithm used.                                         |
+| Weight Decay             | 0.01            | Weight decay parameter for the optimizer.                                |
+| Frozen LLM Parameters    | True            | Indicates if the LLM parameters are kept frozen.                         |
+| Number of Data Samples   | 1000            | Total number of data samples used for tuning.                            |
+| Data Sample Distribution | 200 per dataset | Each dataset contributes 200 samples.                                    |
+| Datasets Used            | Various         | Includes PubmedQA, MedMCQA, ADE-Corpus-V2, DDI-corpus, and Drug-Effects. |
+| τ (Tau)                  | 0.1             | Hyperparameter for DSDG edge weight calculations.                        |
+| K                        | 5               | Hyperparameter for DSDG edge weight calculations.                        |
+
+These settings were selected to optimize the performance of DrugGPT on various downstream tasks while considering computational efficiency.
+
 ### Arguments:
 Here are some key argument to run `train.py`:
 - `--ckpt_name`: The filename for the model checkpoint. Default is `model_state_latest.pth`.
