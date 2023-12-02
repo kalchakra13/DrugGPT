@@ -129,8 +129,7 @@ The source data can be accessed at:
 7. **DDI-Corpus**: [Hugging Face Datasets](https://huggingface.co/datasets/bigbio/ddi_corpus)
 8. **PubMedQA**: [PubMedQA Homepage](https://pubmedqa.github.io/)
 
-The pre-processed data can be accessed under the data folder.
-Alternatively, you can download the pre-processed data from [Google Drive](https://drive.google.com/drive/folders/1Cd1KdWzCdD0iOUE2HB9BZa8ReVoHVc11?usp=drive_link) (please send us an email for access).
+The preprocessed data might be too large for direct access, you can download the pre-processed data from [Google Drive](https://drive.google.com/drive/folders/1Cd1KdWzCdD0iOUE2HB9BZa8ReVoHVc11?usp=drive_link) (please send us an email for access).
 
 ## Training
 ### Arguments:
