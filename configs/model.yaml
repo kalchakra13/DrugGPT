@@ -18,9 +18,19 @@ SOFT_PROMPT_CONFIGS:
   warmup_ratio: 0.1
   gradient_clip: null
   logging_interval: 100
+  forgiveness: 2
+
+GCN_CONFIGS:
+    'input_dim': 384,
+    'hidden_dim': 128,
+    'output_dim': 3404,
+    'learning_rate': 0.001,
+    'weight_decay': 0.01,
+    'epochs': 10,
+    'warmup_ratio': 0.1,
 
 DATA_LOADER_CONFIGS:
-  batch_size: 32
+  batch_size: 1
   max_length: 512
   val_split: 0.2
   shuffle: true

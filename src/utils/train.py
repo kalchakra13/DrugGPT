@@ -1,9 +1,9 @@
 import logging
 from transformers import AutoTokenizer
 from ..data.data_loader import get_data_loaders
-from ..prompt_tuning.soft_prompt_tuning import SoftPromptTuner
+from ..prompt_tuning.soft_prompt_tuning import SoftPromptTuner, extract_entities
 from ..llama.llama_utils import LLaMAUtils, SoftEmbedding
-from ..gcn.gcn_model import GraphConvolutionalNetwork, get_initial_prefix
+from ..gcn.gcn_model import GraphConvolutionalNetwork
 from ..gcn.dsdg import DSDGGenerator
 import argparse
 from pathlib import Path
@@ -16,44 +16,33 @@ with open('model.yaml', 'r') as file:
 LLAMA_CONFIGS = configs['LLAMA_CONFIGS']
 SOFT_PROMPT_CONFIGS = configs['SOFT_PROMPT_CONFIGS']
 DATA_LOADER_CONFIGS = configs['DATA_LOADER_CONFIGS']
+GCN_CONFIGS = configs['GCN_CONFIGS']
 
 
 def main():
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
 
-    # Initialize tokenizer
+    # Initialize tokenizer and DSDG Generator
     tokenizer = AutoTokenizer.from_pretrained(LLAMA_CONFIGS['model_name'])
-
-    # Initialize DSDG Generator
     dsdg_generator = DSDGGenerator('path/to/excel', embd_model_name='all-MiniLM-L6-v2')
-    graph = dsdg_generator.get_graph()
 
-    # Initialize Graph Convolutional Network and generate initial prefix
-    # Generate the embedding of the extracted symptoms
-    symptoms_embedding = dsdg_generator.get_average_symptoms_embedding()
-    # Generate the initial prefix
-    initial_prefix = get_initial_prefix(graph, symptoms_embedding, n_soft_prompts=100)
-
-    # Initialize LLaMAUtils with Soft Embedding
+    # Initialize LLaMAUtils
     llama_utils = LLaMAUtils(LLAMA_CONFIGS)
-    soft_embedding = SoftEmbedding(
-        wte=llama_utils.model.get_input_embeddings(),
-        n_tokens=initial_prefix.shape[0],
-        initialize_from_vocab=False
-    )
-    soft_embedding.load_state_dict({'learned_embedding': initial_prefix})
-    llama_utils.set_input_embeddings(soft_embedding)
+    llama_utils.freeze_llama_weights()
+
+    # Initialize Graph Convolutional Network (GCN)
+    gcn_model = GraphConvolutionalNetwork(GCN_CONFIGS['input_dim'], GCN_CONFIGS['hidden_dim'], GCN_CONFIGS['output_dim'])
 
     # Load dataset
     train_loader, val_loader = get_data_loaders(tokenizer, '../../data/FT1.csv', DATA_LOADER_CONFIGS)
 
-    # Initialize Soft Prompt Tuner
-    soft_prompt_tuner = SoftPromptTuner(llama_utils, SOFT_PROMPT_CONFIGS)
+    # Initialize Soft Prompt Tuner with GCN
+    soft_prompt_tuner = SoftPromptTuner(llama_utils, gcn_model, dsdg_generator, SOFT_PROMPT_CONFIGS)
 
-    # Training and Validation
-    logger.info("Starting training...")
-    soft_prompt_tuner.train(train_loader, val_loader)
+    # Start training the GCN
+    logger.info("Starting GCN training...")
+    soft_prompt_tuner.train_gcn(train_loader, val_loader)
 
     logger.info("Training complete.")
 

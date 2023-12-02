@@ -6,8 +6,8 @@ import yaml
 from DrugGPT.src.ensemble.ensemble_model import EnsembleModel
 from DrugGPT.src.prompt.prompt_manager import PromptManager
 from DrugGPT.src.llama.llama_utils import LLaMAUtils, SoftEmbedding
-from DrugGPT.src.gcn.gcn_model import get_initial_prefix, GraphConvolutionalNetwork
-from DrugGPT.src.prompt_tuning.soft_prompt_tuning import SoftPromptTuner
+from DrugGPT.src.gcn.gcn_model import GraphConvolutionalNetwork
+from DrugGPT.src.prompt_tuning.soft_prompt_tuning import SoftPromptTuner, extract_entities
 from DrugGPT.src.gcn.dsdg import DSDGGenerator
 from DrugGPT.src.utils import parser
 

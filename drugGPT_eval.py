@@ -7,19 +7,39 @@ from DrugGPT.src.prompt.prompt_manager import PromptManager
 from DrugGPT.src.llama.llama_utils import LLaMAUtils, SoftEmbedding
 from DrugGPT.src.gcn.dsdg import DSDGGenerator
 from DrugGPT.src.utils.parser import binary_parser, text_parser, mc_parser
+from DrugGPT.src.gcn.gcn_model import GraphConvolutionalNetwork
+from DrugGPT.src.prompt_tuning.soft_prompt_tuning import SoftPromptTuner, extract_entities
 import logging
 import yaml
 
 
 class Evaluation:
+    """
+    A class for evaluating the performance of the EnsembleModel.
+
+    Attributes:
+        ensemble_model (EnsembleModel): The ensemble model to be evaluated.
+        parser_dict (dict): A dictionary of parsing functions for different datasets.
+        log_results (bool): Flag to enable logging of results.
+        store_results (bool): Flag to enable storing of results in a file.
+        log_wrong_answers_only (bool): Flag to log only the wrong answers.
+        use_openai (bool): Flag to use OpenAI API for inference.
+
+    Methods:
+        check_text_accuracy(prediction, actual): Checks if the prediction is accurate compared to the actual answer.
+        calculate_f1_metrics(prediction, label): Calculates F1 metrics for a given prediction and label.
+        log_answer(i, input_data, prediction, actual_label): Logs an answer with its index, input, prediction, and label.
+        evaluate(dataset_name, evaluation_set): Evaluates the model on a given dataset and returns the results.
+    """
+
     def __init__(self, ensemble_model, parser_dict, log_results=True, store_results=False,
-                 log_wrong_answers_only=False, useopenai=False):
+                 log_wrong_answers_only=False, use_openai=False):
         self.ensemble_model = ensemble_model
-        self.log_results = log_results
         self.parser_dict = parser_dict
-        self.useopenai = useopenai
+        self.log_results = log_results
         self.store_results = store_results
         self.log_wrong_answers_only = log_wrong_answers_only
+        self.use_openai = use_openai
 
     @staticmethod
     def check_text_accuracy(prediction, actual):
@@ -60,7 +80,7 @@ class Evaluation:
 
         for i in tqdm(range(slice_size), desc="Processing"):
             input_data = evaluation_set['sample'][i]
-            full_response = self.ensemble_model.run_inference(input_data, use_openai=self.useopenai)
+            full_response = self.ensemble_model.run_inference(input_data, use_openai=self.use_openai)
             parsed_response = self.parser_dict[dataset_name](full_response)
 
             correct_answer = self.check_text_accuracy(parsed_response, evaluation_set['label'][i].lower())
@@ -169,43 +189,22 @@ def load_evaluation_set(dataset_name):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate Ensemble Model")
-    parser.add_argument('--openai_key', type=str, required=True, help='OpenAI API key')
-    parser.add_argument('--hf_key', type=str, required=True, help='Hugging Face API key')
-    parser.add_argument('--excel_path', type=str, required=True, help='Path to DSDG Excel file')
-    parser.add_argument('--dataset_name', type=str, required=True,
-                        choices=['pubmedqa', 'ade', 'chatDoctor', 'DDI_binary', 'drug_usage', 'medmcqa', 'mmlu_mc',
-                                 'usmle_mc', 'moderna_interactions'], help='Name of the dataset for evaluation')
-    parser.add_argument('--evaluation_set_path', type=str, required=True, help='Path to the evaluation dataset')
-    parser.add_argument('--log_results', action='store_true', help='Enable logging of results')
-    parser.add_argument('--store_results', action='store_true', help='Enable storing of results')
-    parser.add_argument('--log_wrong_answers_only', action='store_true', help='Log only wrong answers')
-    parser.add_argument('--use_open_ai', action='store_true', help='Use OpenAI API for inference of last generation '
-                                                                   'model for better conversational alignment')
-    args = parser.parse_args()
-
-    # Set environment variables for API keys
-    os.environ["OPENAI_API_KEY"] = args.openai_key
-    os.environ["HUGGINGFACEHUB_API_TOKEN"] = args.hf_key
-
     # Load configurations from model.yaml
     with open('model.yaml', 'r') as file:
         configs = yaml.safe_load(file)
 
     LLAMA_CONFIGS = configs['LLAMA_CONFIGS']
+    GCN_CONFIGS = configs['GCN_CONFIGS']
 
     # Initialize components
     prompt_manager = PromptManager()
     dsdg_generator = DSDGGenerator(args.excel_path, embd_model_name='all-MiniLM-L6-v2')
     llama_utils = LLaMAUtils(LLAMA_CONFIGS)
+    gcn_model = GraphConvolutionalNetwork(GCN_CONFIGS['input_dim'], GCN_CONFIGS['hidden_dim'],
+                                          GCN_CONFIGS['output_dim'])
 
-    # Load soft embedding checkpoint
-    checkpoint_file = "../../data/soft_prompt_checkpoint.pth"
-    soft_embedding = SoftEmbedding.load_checkpoint(checkpoint_file)
-    llama_utils.set_input_embeddings(soft_embedding)
-
-    # Initialize Ensemble Model
-    ensemble_model = EnsembleModel(prompt_manager, soft_embedding, dsdg_generator, llama_utils, args.openai_key)
+    # Initialize Ensemble Model with GCN as soft prompt generator
+    ensemble_model = EnsembleModel(prompt_manager, gcn_model, dsdg_generator, llama_utils, args.openai_key)
 
     # Define parser dictionary for different datasets
     parser_dict = {
@@ -236,4 +235,22 @@ def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Evaluate Ensemble Model")
+    parser.add_argument('--openai_key', type=str, required=True, help='OpenAI API key')
+    parser.add_argument('--hf_key', type=str, required=True, help='Hugging Face API key')
+    parser.add_argument('--excel_path', type=str, required=True, help='Path to DSDG Excel file')
+    parser.add_argument('--dataset_name', type=str, required=True,
+                        choices=['pubmedqa', 'ade', 'chatDoctor', 'DDI_binary', 'drug_usage', 'medmcqa', 'mmlu_mc',
+                                 'usmle_mc', 'moderna_interactions'], help='Name of the dataset for evaluation')
+    parser.add_argument('--evaluation_set_path', type=str, required=True, help='Path to the evaluation dataset')
+    parser.add_argument('--log_results', action='store_true', help='Enable logging of results')
+    parser.add_argument('--store_results', action='store_true', help='Enable storing of results')
+    parser.add_argument('--log_wrong_answers_only', action='store_true', help='Log only wrong answers')
+    parser.add_argument('--use_open_ai', action='store_true', help='Use OpenAI API for inference of last generation '
+                                                                   'model for better conversational alignment')
+    args = parser.parse_args()
+
+    # Set environment variables for API keys
+    os.environ["OPENAI_API_KEY"] = args.openai_key
+    os.environ["HUGGINGFACEHUB_API_TOKEN"] = args.hf_key
     main()

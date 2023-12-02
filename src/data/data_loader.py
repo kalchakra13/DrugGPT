@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 # DataLoader Configuration
 DATA_LOADER_CONFIGS = {
-    'batch_size': 32,
+    'batch_size': 1,
     'max_length': 512,
     'val_split': 0.2,
     'shuffle': True,

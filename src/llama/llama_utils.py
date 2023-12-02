@@ -124,10 +124,10 @@ class LLaMAUtils:
     def initialize_tokenizer(self):
         self.tokenizer = AutoTokenizer.from_pretrained(self.configs['model_name'])
 
-    def llama_training_forward(self, input_ids):
-        logger.info("Running forward pass for training...")
-        full_embedding = self.soft_embedding(input_ids.to(self.device))
-        logits = self.model(inputs_embeds=full_embedding).logits
+    def llama_training_forward(self, input_ids, soft_prompt_prefix):
+        logger.info("Running forward pass for training with soft prompt...")
+        self.set_input_embeddings(soft_prompt_prefix)  # Update model's input embeddings with soft prompt
+        logits = self.model(input_ids=input_ids.to(self.device)).logits
         return logits
 
     def save_model(self, save_path):
@@ -139,3 +139,8 @@ class LLaMAUtils:
         logger.info(f"Loading model from {load_path}")
         self.model = AutoModelForCausalLM.from_pretrained(load_path)
         self.tokenizer = AutoTokenizer.from_pretrained(load_path)
+
+    def freeze_llama_weights(self):
+        """Freezes the weights of the LLaMA model to prevent them from being updated during training."""
+        for param in self.model.parameters():
+            param.requires_grad = False

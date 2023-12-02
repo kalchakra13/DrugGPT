@@ -1,28 +1,30 @@
 import openai
 import re
+from ..prompt_tuning.soft_prompt_tuning import extract_entities
 
 
 class EnsembleModel:
     """
-        This class facilitates the process of inquiry analysis, knowledge acquisition, and evidence generation
-        by orchestrating the interaction between different models and knowledge sources.
+    Orchestrates the process of inquiry analysis, knowledge acquisition, and evidence generation
+    by integrating different models and knowledge sources.
 
-        Attributes:
-            prompt_manager (PromptManager): Manages and generates prompts for various tasks.
-            soft_prompt (torch.Tensor): The soft prompt to be used with the LLaMA model.
-            knowledge_base (DSDGGenerator): A knowledge base containing medical information.
-            llama_utils (LLaMAUtils): Utility class for LLaMA model operations.
-            openai_api_key (str): API key for OpenAI services.
+    Attributes:
+        prompt_manager (PromptManager): Manages and generates prompts for various tasks.
+        soft_prompt_generator (GraphConvolutionalNetwork): GCN model to generate soft prompts dynamically.
+        knowledge_base (DSDGGenerator): Knowledge base containing medical information.
+        llama_utils (LLaMAUtils): Utility class for LLaMA model operations.
+        openai_api_key (str): API key for OpenAI services.
 
-        Methods:
-            openai_inference(prompt): Performs inference using OpenAI's GPT-3.5 model.
-            llama_inference(prompt): Performs inference using the LLaMA model with soft prompts.
-            extract_knowledge(ka_response): Extracts relevant knowledge entries based on the KA response.
-            run_inference(input_data): Orchestrates the complete inference process involving IA, KA, and EG steps.
-        """
-    def __init__(self, prompt_manager, soft_prompt, knowledge_base, llama_utils, openai_api_key):
+    Methods:
+        openai_inference(prompt): Conducts inference using OpenAI's GPT-3.5 model.
+        llama_inference(prompt, identified_entities): Performs inference using LLaMA model with dynamic soft prompts.
+        extract_knowledge(ka_response): Extracts relevant knowledge entries from the KA response.
+        run_inference(input_data, use_openai): Orchestrates the complete inference process involving IA, KA, and EG steps.
+    """
+
+    def __init__(self, prompt_manager, soft_prompt_generator, knowledge_base, llama_utils, openai_api_key):
         self.prompt_manager = prompt_manager
-        self.soft_prompt = soft_prompt
+        self.soft_prompt_generator = soft_prompt_generator
         self.knowledge_base = knowledge_base
         self.llama_utils = llama_utils
         self.openai_api_key = openai_api_key
@@ -36,8 +38,15 @@ class EnsembleModel:
         )
         return response.choices[0].text.strip()
 
-    def llama_inference(self, prompt, use_soft_prompt=True):
-        return self.llama_utils.llama_inference(prompt, use_soft_prompt=use_soft_prompt)
+    def llama_inference(self, prompt, identified_entities, use_soft_prompt=True):
+        if use_soft_prompt:
+            # Generate soft prompt using GCN
+            soft_prompt_prefix = self.soft_prompt_generator.generate_prefix(
+                self.knowledge_base.get_graph(), identified_entities)
+            self.llama_utils.set_input_embeddings(soft_prompt_prefix)
+
+        # Perform inference with the LLaMA model
+        return self.llama_utils.llama_inference(prompt)
 
     def extract_knowledge(self, ka_response):
         # Regex to extract the knowledge numbers needed
@@ -68,9 +77,10 @@ class EnsembleModel:
         else:
             ia_response = self.llama_inference(ia_combined_prompt + input_data, use_soft_prompt=False)
 
-        # Knowledge Acquisition (KA) using LLaMA model with soft prompts
+        # Knowledge Acquisition (KA) using LLaMA model with dynamic soft prompts
         ka_combined_prompt = self.prompt_manager.generate_combined_prompt("knowledge_acquisition")
-        ka_response = self.llama_inference(self.soft_prompt + ka_combined_prompt + ia_response)
+        identified_entities = extract_entities(ia_response)  # Extract entities for generating the soft prompt
+        ka_response = self.llama_inference(ka_combined_prompt + ia_response, identified_entities)
 
         # Accessing the Knowledge Base after KA
         dsdg_enriched_input = self.extract_knowledge(ka_response)

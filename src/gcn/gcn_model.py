@@ -9,73 +9,65 @@ import numpy as np
 
 class GraphConvolutionalNetwork(nn.Module):
     """
-        A class implementing a Graph Convolutional Network (GCN) for obtaining the prefix embedding.
-    """
-    def __init__(self, input_dim, hidden_dim, output_dim):
-        super(GraphConvolutionalNetwork, self).__init__()
+    Implements a Graph Convolutional Network (GCN) for generating graph-based embeddings.
 
+    Attributes:
+        conv1 (pyg_nn.GCNConv): First graph convolutional layer.
+        conv2 (pyg_nn.GCNConv): Second graph convolutional layer.
+
+    Methods:
+        forward(data): Performs a forward pass through the network.
+        generate_prefix(G, identified_entities, n_soft_prompts): Generates the soft prompt prefix using the GCN.
+    """
+    def __init__(self, input_dim, hidden_dim, output_dim, configs = None):
+        super(GraphConvolutionalNetwork, self).__init__()
         self.conv1 = pyg_nn.GCNConv(input_dim, hidden_dim)
-        self.conv2 = pyg_nn.GCNConv(hidden_dim, output_dim)
+        self.conv2 = pyg_nn.GCNConv(hidden_dim, output_dim // 2)
+        self.confic = configs
 
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
-
         x = F.relu(self.conv1(x, edge_index))
         x = F.dropout(x, p=0.5, training=self.training)
-
         x = self.conv2(x, edge_index)
-
         return x
 
-
-def get_initial_prefix(G, symptoms_embedding, hidden_dim=128, output_dim=3404, n_soft_prompts=100):
-    """
-        Generates an initial prefix for soft prompt tuning using a GCN.
-
-        This function initializes a GCN model to process the graph data and compute node embeddings.
-        It then combines global graph embeddings with disease-specific embeddings to form an initial
-        prefix for soft prompt tuning.
+    def generate_prefix(self, G, identified_entities, n_soft_prompts=100):
+        """
+        Generates a soft prompt prefix using the GCN model.
 
         Args:
-            G (nx.Graph): A NetworkX graph representing the data.
-            symptoms_embedding (torch.Tensor): Embedding of the symptoms.
-            hidden_dim (int): The hidden dimension size for the GCN. Defaults to 128.
-            output_dim (int): The output dimension size for the GCN. Defaults to 3404.
-            n_soft_prompts (int): Number of soft prompts to concatenate. Defaults to 100.
+            G (nx.Graph): The graph representing the data.
+            identified_entities (list): List of identified drugs and diseases.
+            n_soft_prompts (int): Number of soft prompts to concatenate.
 
         Returns:
-            torch.Tensor: The initial prefix for soft prompt tuning.
+            torch.Tensor: The soft prompt prefix.
         """
-    # Initialize GCN model
-    input_dim = G.nodes[list(G.nodes())[0]]['embedding'].shape[0]
-    model = GraphConvolutionalNetwork(input_dim, hidden_dim, output_dim/2)
+        # Prepare and process graph data
+        node_ids = {node: i for i, node in enumerate(G.nodes())}
+        node_embeddings = torch.tensor([G.nodes[node]['embedding'] for node in G.nodes()])
+        edge_index = torch.tensor([[node_ids[src], node_ids[dst]] for src, dst in G.edges()]).t().contiguous()
+        data = pyg_utils.Data(x=node_embeddings, edge_index=edge_index)
 
-    # Prepare input for GCN
-    node_ids = {node: i for i, node in enumerate(G.nodes())}
-    node_embeddings = torch.tensor([G.nodes[node]['embedding'] for node in G.nodes()])
-    edge_index = torch.tensor([[node_ids[src], node_ids[dst]] for src, dst in G.edges()]).t().contiguous()
-    data = pyg_utils.Data(x=node_embeddings, edge_index=edge_index)
+        # Forward pass through GCN
+        out = self.forward(data)
 
-    # Forward pass through GCN
-    out = model(data)
+        # Calculate global graph embedding (g_a)
+        g_a = torch.mean(out, dim=0)
 
-    # Calculate the global graph embedding by averaging all node embeddings
-    g_a = torch.mean(out, dim=0)
+        # Calculate the average embedding for identified entities (g_d)
+        entity_embeddings = torch.tensor([G.nodes[entity]['embedding'] for entity in identified_entities if entity in G.nodes])
+        g_d = torch.mean(entity_embeddings, dim=0) if len(entity_embeddings) > 0 else torch.zeros(out.shape[1])
 
-    # Calculate cosine similarity between symptoms_embedding and all disease nodes
-    disease_nodes = [node for node, attr in G.nodes(data=True) if attr['type'] == 'disease']
-    disease_embeddings = torch.tensor([G.nodes[node]['embedding'] for node in disease_nodes])
-    disease_similarities = cosine_similarity(symptoms_embedding.reshape(1, -1), disease_embeddings)
-    most_similar_disease_idx = np.argmax(disease_similarities)
-    g_d = torch.tensor(G.nodes[disease_nodes[most_similar_disease_idx]]['embedding'])
+        # Combine g_a and g_d to form the initial prefix
+        g = torch.cat((g_a, g_d), dim=0)
 
-    # Combine g_a and g_d to get the initial prefix g for the soft prompt tuning
-    g = torch.cat((g_a, g_d), dim=0)
+        # Concatenate n_soft_prompts copies of g, default to 100
+        final_soft_prompt = torch.cat([g for _ in range(n_soft_prompts)], dim=0)
 
-    # Concatenate n_soft_prompts of g to create the final soft prompt
-    final_soft_prompt = torch.cat([g for _ in range(n_soft_prompts)], dim=0)
+        return final_soft_prompt
 
-    return final_soft_prompt
 
 # Example usage:
 # G is the graph obtained from DSDGGenerator
