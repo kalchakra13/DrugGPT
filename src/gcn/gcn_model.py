@@ -1,36 +1,47 @@
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch_geometric.nn as pyg_nn
+from torch import nn
+from torch_geometric.nn import Sequential, GCNConv
 import torch_geometric.utils as pyg_utils
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
+import networkx as nx
 
 
 class GraphConvolutionalNetwork(nn.Module):
     """
-    Implements a Graph Convolutional Network (GCN) for generating graph-based embeddings.
+    Implements an Graph Convolutional Network (GCN) with skip connections for generating graph-based embeddings.
 
     Attributes:
-        conv1 (pyg_nn.GCNConv): First graph convolutional layer.
-        conv2 (pyg_nn.GCNConv): Second graph convolutional layer.
+        conv1 (GCNConv): First graph convolutional layer.
+        conv2 (GCNConv): Second graph convolutional layer.
+        conv3 (GCNConv): Third graph convolutional layer for deeper feature extraction.
+        configs (dict): Optional configurations for the GCN model.
 
     Methods:
         forward(data): Performs a forward pass through the network.
-        generate_prefix(G, identified_entities, n_soft_prompts): Generates the soft prompt prefix using the GCN.
     """
-    def __init__(self, input_dim, hidden_dim, output_dim, configs = None):
+
+    def __init__(self, input_dim, hidden_dim, output_dim, configs=None):
         super(GraphConvolutionalNetwork, self).__init__()
-        self.conv1 = pyg_nn.GCNConv(input_dim, hidden_dim)
-        self.conv2 = pyg_nn.GCNConv(hidden_dim, output_dim // 2)
-        self.confic = configs
+        self.conv1 = GCNConv(input_dim, hidden_dim)
+        self.conv2 = GCNConv(hidden_dim, hidden_dim)
+        self.conv3 = GCNConv(hidden_dim, output_dim // 2)
+        self.configs = configs
 
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
-        x = F.relu(self.conv1(x, edge_index))
-        x = F.dropout(x, p=0.5, training=self.training)
-        x = self.conv2(x, edge_index)
-        return x
+
+        # First layer
+        x1 = F.relu(self.conv1(x, edge_index))
+        x1 = F.dropout(x1, training=self.training)
+
+        # Second layer with skip connection from the first layer
+        x2 = F.relu(self.conv2(x1, edge_index)) + x1
+        x2 = F.dropout(x2, training=self.training)
+
+        # Third layer with skip connection from the second layer
+        x3 = self.conv3(x2, edge_index) + x2
+
+        return x3
 
     def generate_prefix(self, G, identified_entities, n_soft_prompts=100):
         """
@@ -57,7 +68,8 @@ class GraphConvolutionalNetwork(nn.Module):
         g_a = torch.mean(out, dim=0)
 
         # Calculate the average embedding for identified entities (g_d)
-        entity_embeddings = torch.tensor([G.nodes[entity]['embedding'] for entity in identified_entities if entity in G.nodes])
+        entity_embeddings = torch.tensor(
+            [G.nodes[entity]['embedding'] for entity in identified_entities if entity in G.nodes])
         g_d = torch.mean(entity_embeddings, dim=0) if len(entity_embeddings) > 0 else torch.zeros(out.shape[1])
 
         # Combine g_a and g_d to form the initial prefix
@@ -68,10 +80,8 @@ class GraphConvolutionalNetwork(nn.Module):
 
         return final_soft_prompt
 
-
 # Example usage:
 # G is the graph obtained from DSDGGenerator
 # symptoms_embedding is the embedding of the extracted symptoms, obtained using embd_model from DSDGGenerator
 
 # g = get_initial_prefix(G, symptoms_embedding, embd_model)
-
