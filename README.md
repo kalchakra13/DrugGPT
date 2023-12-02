@@ -202,10 +202,3 @@ To evaluate other models, use the template provided in notebooks/evaluation.ipyn
 ## Bugs or Questions?
 
 If you encounter any problems when using the code, or want to report a bug, you can open an issue or email {hongjian.zhou@cs.ox.ac.uk, fenglin.liu@eng.ox.ac.uk}. Please try to specify the problem with details so we can help you better and quicker!
-
-## Citation
-
-Please consider citing our papers if our code or datasets are useful to your work, thanks sincerely!
-
-```bibtex
-```
