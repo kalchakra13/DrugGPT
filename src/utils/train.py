@@ -72,7 +72,6 @@ def get_folder_name(config):
     Returns:
     str: Generated folder name.
     """
-    # Example: Generate a folder name by concatenating some config parameters
     folder_name_parts = [
         config.get('model_name', 'model'),
         config.get('learning_rate', 'lr'),
