@@ -43,7 +43,7 @@ To access the full model, visit our demo [DrugGPT Demo](https://demo-drug-gpt.ve
 3. DrugGPT should never be used as medical consultant at the current stage. Please consult to licensed medical professionals for any medical advice.
 
 ### Demos on downstream tasks
-The demo videos showing DrugGPT performing downstream tasks will be available at: 
+The demo videos showing DrugGPT performing downstream tasks are available at: 
 1. [Multiple Choice Q&A](https://www.loom.com/share/6528968b9b804db19f5d7c5e1554197a?sid=6b6019e4-d8d5-46b3-bf7d-7c4895ec91bb)
 2. [Drug and Dosage Recommendation](https://www.loom.com/share/81e82eb651bc4a208097e5f8dc56e28d?sid=a4ca2143-6e6f-48f0-9863-b6e691f40273)
 3. [Adverse Reaction](https://www.loom.com/share/2b4b91726dfe4a38afe99a56cacd5170?sid=9f0e4480-0b60-48f9-909c-4f1f02c58a82)
