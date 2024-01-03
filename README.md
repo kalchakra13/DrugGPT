@@ -1,7 +1,4 @@
 # DrugGPT
-This repo contains the original implementation of our paper ***DrugGPT: A Knowledge-Grounded Collaborative Large Language Model for Evidence-based Drug Analysis***.
-
-![DrugGPT Architecture](./img/flowchart.png)
 ## Updates
 [15/11/2023] We clean up our codebase to improve readability!
 
